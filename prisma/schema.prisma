@@ -29,3 +29,11 @@ model Review {
 
   @@map("reviews")
 }
+
+model ReviewOnLike {
+  reviewId Int
+  userId   Int
+
+  @@id([reviewId, userId])
+  @@map("reviews_likes")
+}
