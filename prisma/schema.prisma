@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
@@ -11,21 +8,74 @@ generator client {
 }
 
 model User {
-  id     Int      @id @default(autoincrement())
-  name   String   @db.VarChar(50)
-  Review Review[]
+  id      Int    @id @default(autoincrement())
+  address String @db.VarChar(100)
+  cartId  Int    @map("cart_id")
+  cart    Cart   @relation("cartId", fields: [cartId], references: [id])
+  Cart    Cart[]
 
+  Order Order[]
   @@map("users")
 }
 
-model Review {
-  id        Int       @id @default(autoincrement())
-  title     String    @db.VarChar(1000)
-  text      String    @db.VarChar(3000)
-  user      User      @relation(fields: [userId], references: [id])
-  userId    Int       @map("user_id")
-  createdAt DateTime  @map("created_at") @db.Timestamp
-  updatedAt DateTime? @map("updated_at") @db.Timestamp
+model ProductDetail {
+  id            Int    @id @default(autoincrement())
+  nameKorean    String @map("name_korean") @db.VarChar(40)
+  salesPrice    Int    @map("sales_price")
+  originalPrice Int    @map("original_price")
+  earnPoint     Int    @map("earn_point")
+  thumbUrl      String @map("thumb_url") @db.VarChar(2000)
+  Cart          Cart[]
 
-  @@map("reviews")
+  Order Order[]
+  @@map("product_details")
+}
+
+model Cart {
+  id            Int           @id @default(autoincrement())
+  userId        Int           @map("user_id")
+  userAddress   String        @map("address") @db.VarChar(100)
+  user          User          @relation(fields: [userId, userAddress], references: [id, address])
+  nameKorean    String        @map("name_korean") @db.VarChar(40)
+  thumbUrl      String        @map("thumb_url") @db.VarChar(2000)
+  salesPrice    Int           @map("sales_price")
+  originalPrice Int           @map("original_price")
+  earnPoint     Int           @map("earn_point")
+  product       ProductDetail @relation(fields: [nameKorean, thumbUrl, salesPrice, originalPrice, earnPoint], references: [nameKorean, thumbUrl, salesPrice, originalPrice, earnPoint])
+  storageTemp   String        @map("storage_temp")
+  storageType   StorageTemp   @relation(fields: [storageTemp], references: [storageType])
+  quantity      Int
+
+  Order Order[]
+  User  User[]  @relation("cartId")
+  @@map("carts")
+}
+
+model StorageTemp {
+  id          Int    @id @default(autoincrement())
+  storageType String
+
+  Cart  Cart[]
+  Order Order[]
+  @@map("storage_temps")
+}
+
+model Order {
+  id            Int           @id @default(autoincrement())
+  cartId        Int           @map("cart_id")
+  cart          Cart          @relation(fields: [cartId], references: [id])
+  userId        Int           @map("user_id")
+  userAddress   String        @map("address") @db.VarChar(100)
+  user          User          @relation(fields: [userId, userAddress], references: [id, address])
+  nameKorean    String        @map("name_korean") @db.VarChar(40)
+  thumbUrl      String        @map("thumb_url") @db.VarChar(2000)
+  salesPrice    Int           @map("sales_price")
+  originalPrice Int           @map("original_price")
+  earnPoint     Int           @map("earn_point")
+  product       ProductDetail @relation(fields: [nameKorean, thumbUrl, salesPrice, originalPrice, earnPoint], references: [nameKorean, thumbUrl, salesPrice, originalPrice, earnPoint])
+  storageTemp   String        @map("storage_temp")
+  storageType   StorageTemp   @relation(fields: [storageTemp], references: [storageType])
+  quantity      Int
+
+  @@map("orders")
 }
