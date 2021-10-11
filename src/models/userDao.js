@@ -1,14 +1,24 @@
 import prisma from '../../prisma';
 
-const searchUser = async accountName => {
+const searchUserId = async accountName => {
   return await prisma.$queryRaw`
   SELECT
   users.account
   FROM
   users
   WHERE
-  users.account
-  = ${accountName}
+  users.account = ${accountName}
+  `;
+};
+
+const searchUserPw = async accountName => {
+  return await prisma.$queryRaw`
+  SELECT
+  users.password
+  FROM
+  users
+  WHERE
+  users.account = ${accountName}
   `;
 };
 
@@ -16,6 +26,7 @@ const createUser = async userData => {
   const {
     account,
     name,
+    email,
     hash,
     phone_number,
     address,
@@ -30,6 +41,7 @@ const createUser = async userData => {
   users (
     account,
     name,
+    email,
     password,
     phone_number,
     address,
@@ -43,6 +55,7 @@ const createUser = async userData => {
   (
     ${account},
     ${name},
+    ${email},
     ${hash},
     ${phone_number},
     ${address},
@@ -55,4 +68,17 @@ const createUser = async userData => {
   `;
 };
 
-export default { searchUser, createUser };
+const findUser = async (email, name) => {
+  return await prisma.$queryRaw`
+  SELECT
+  users.password
+  FROM
+  users
+  WHERE
+  users.email = ${email}
+  AND
+  users.name =${name}
+  `;
+};
+
+export default { searchUserId, searchUserPw, createUser, findUser };
