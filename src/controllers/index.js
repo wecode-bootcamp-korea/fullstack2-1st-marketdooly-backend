@@ -1,3 +1,4 @@
+import cartController from './cartController';
 import reviewController from './reviewController';
 
-export { reviewController };
+export { cartController, reviewController };
