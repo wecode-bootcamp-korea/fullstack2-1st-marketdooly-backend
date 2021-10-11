@@ -19,14 +19,16 @@ model User {
 }
 
 model ProductDetail {
-  id            Int    @id @default(autoincrement())
-  nameKorean    String @map("name_korean") @db.VarChar(40)
-  salesPrice    Int    @map("sales_price")
-  originalPrice Int    @map("original_price")
-  earnPoint     Int    @map("earn_point")
-  thumbUrl      String @map("thumb_url") @db.VarChar(2000)
-  Cart          Cart[]
+  id            Int         @id @default(autoincrement())
+  nameKorean    String      @map("name_korean") @db.VarChar(40)
+  salesPrice    Int         @map("sales_price")
+  originalPrice Int         @map("original_price")
+  earnPoint     Int         @map("earn_point")
+  thumbUrl      String      @map("thumb_url") @db.VarChar(2000)
+  storageType   String      @map("storage_type")
+  storageTemp   StorageTemp @relation(fields: [storageType], references: [storageType])
 
+  Cart  Cart[]
   Order Order[]
   @@map("product_details")
 }
@@ -42,8 +44,8 @@ model Cart {
   originalPrice Int           @map("original_price")
   earnPoint     Int           @map("earn_point")
   product       ProductDetail @relation(fields: [nameKorean, thumbUrl, salesPrice, originalPrice, earnPoint], references: [nameKorean, thumbUrl, salesPrice, originalPrice, earnPoint])
-  storageTemp   String        @map("storage_temp")
-  storageType   StorageTemp   @relation(fields: [storageTemp], references: [storageType])
+  storageType   String        @map("storage_type")
+  storageTemp   StorageTemp   @relation(fields: [storageType], references: [storageType])
   quantity      Int
 
   Order Order[]
@@ -55,8 +57,9 @@ model StorageTemp {
   id          Int    @id @default(autoincrement())
   storageType String
 
-  Cart  Cart[]
-  Order Order[]
+  Cart          Cart[]
+  Order         Order[]
+  ProductDetail ProductDetail[]
   @@map("storage_temps")
 }
 
