@@ -1,12 +1,14 @@
 import prisma from '../../prisma';
 
-const getCart = async () => {
+const getCart = async userId => {
   return await prisma.$queryRaw`
-  SELECT * FROM carts
+  SELECT c.user_id, c.address, c.cart_id
+  FROM carts c
+  WHERE user_id=${userId}
   `;
 };
 
-const putItemQuantity = async quantity => {
+const updateItemQuantity = async quantity => {
   return await prisma.$queryRaw`
   UPDATE carts
   SET quantity=${quantity}
@@ -48,4 +50,4 @@ const postCart = async cartData => {
   `;
 };
 
-export default { getCart, putItemQuantity, deleteItem, postCart };
+export default { getCart, updateItemQuantity, deleteItem, postCart };
