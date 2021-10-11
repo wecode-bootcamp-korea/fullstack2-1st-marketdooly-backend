@@ -13,7 +13,6 @@ const login = async (account, password) => {
   } else {
     throw new Error('유저가 존재하지 않습니다.');
   }
-  return userHash;
 };
 
 const signUp = async userData => {
