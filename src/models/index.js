@@ -1,3 +1,4 @@
 import reviewDao from './reviewDao';
+import userDao from './userDao';
 
-export { reviewDao };
+export { reviewDao, userDao };
