@@ -11,10 +11,20 @@ generator client {
 }
 
 model User {
-  id     Int      @id @default(autoincrement())
-  name   String   @db.VarChar(50)
-  Review Review[]
+  id                             Int       @id @default(autoincrement())
+  account                        String    @db.VarChar(50)
+  name                           String    @db.VarChar(20)
+  password                       String    @db.VarChar(100)
+  phoneNumber                    String    @map("phone_number") @db.VarChar(15)
+  address                        String    @db.VarChar(100)
+  gender                         String?   @db.VarChar(20)
+  birthday                       DateTime? @db.Date
+  createdAt                      DateTime  @map("created_at") @db.Timestamp
+  mandatoryPolicyAgreed          Boolean   @map("mandatory_policy_agreed") @db.TinyInt
+  personalInfomationPolicyAgreed Boolean?  @map("personal_information_policy_agreed") @db.TinyInt
+  marketingPolicyAgreed          Boolean?  @map("marketing_policy_agreed") @db.TinyInt
 
+  Review Review[]
   @@map("users")
 }
 
@@ -99,4 +109,12 @@ model DescriptionInformation {
   productId         Int     @map("products_id")
 
   @@map("descriptions_informations")
+}
+
+model ReviewOnLike {
+  reviewId Int
+  userId   Int
+
+  @@id([reviewId, userId])
+  @@map("reviews_likes")
 }
