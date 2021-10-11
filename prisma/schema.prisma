@@ -29,3 +29,74 @@ model Review {
 
   @@map("reviews")
 }
+
+model Product {
+  id                      Int                       @id @default(autoincrement())
+  nameKorean              String                    @map("name_korean") @db.VarChar(40)
+  shortDescription        String                    @map("short_description") @db.VarChar(200)
+  originalPrice           Int                       @map("original_price")
+  discountRate            Int                       @map("discount_rate")
+  salesPrice              Int                       @map("sales_price")
+  ProductDetail           ProductDetail[]
+  AdditionalInformation   AdditionalInformation[]
+  DescriptionIntroduction DescriptionIntroduction[]
+  DescriptionInformation  DescriptionInformation[]
+
+  @@map("products")
+}
+
+model ProductDetail {
+  id               Int     @id @default(autoincrement())
+  earnPoint        Int     @map("earn_point")
+  saleUnit         String  @map("sale_unit") @db.VarChar(10)
+  weightOrCapacity String  @map("weight_or_capacity") @db.VarChar(20)
+  deliveryType     String  @map("delivery_type") @db.VarChar(20)
+  originCountry    String  @map("origin_country") @db.VarChar(10)
+  packageType      String  @map("package_type") @db.VarChar(20)
+  packageMessage   String  @map("package_message") @db.VarChar(200)
+  notification     String  @map("notification") @db.VarChar(200)
+  allergenInfo     String  @map("allergen_information") @db.VarChar(200)
+  product          Product @relation(fields: [productId], references: [id])
+  productId        Int     @map("products_id")
+
+  @@map("products_details")
+}
+
+model AdditionalInformation {
+  id                    Int     @id @default(autoincrement())
+  additionalInformation String  @map("additional_information") @db.VarChar(200)
+  product               Product @relation(fields: [productId], references: [id])
+  productId             Int     @map("products_id")
+
+  @@map("additional_informations")
+}
+
+model DescriptionIntroduction {
+  id                  Int     @id @default(autoincrement())
+  introductionImage   String  @map("introductions_image") @db.VarChar(200)
+  introductionTitle   String  @map("introductions_title") @db.VarChar(200)
+  introductionName    String  @map("introductions_name") @db.VarChar(200)
+  introductionArticle String  @map("introductions_article") @db.VarChar(200)
+  product             Product @relation(fields: [productId], references: [id])
+  productId           Int     @map("products_id")
+
+  @@map("descriptions_introductions")
+}
+
+model DescriptionInformation {
+  id                Int     @id @default(autoincrement())
+  information_image String  @db.VarChar(200)
+  product_name      String  @db.VarChar(20)
+  certification     String  @db.VarChar(20)
+  packaging_unit    String  @db.VarChar(20)
+  matter_note       String  @db.VarChar(100)
+  producer          String  @db.VarChar(100)
+  how_to_store      String  @db.VarChar(100)
+  origin_country    String  @db.VarChar(20)
+  service_call      String  @db.VarChar(40)
+  produce_date      String  @db.VarChar(100)
+  product           Product @relation(fields: [productId], references: [id])
+  productId         Int     @map("products_id")
+
+  @@map("descriptions_informations")
+}
