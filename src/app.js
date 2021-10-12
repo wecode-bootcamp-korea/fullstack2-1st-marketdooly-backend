@@ -9,7 +9,7 @@ app.use(cors());
 app.use(router);
 
 app.use((err, req, res, next) => {
-  console.log(err);
+  console.log('app.js error handler\n', err);
   const { status, message } = err;
   res.status(status || 500).json(message);
 });

@@ -11,12 +11,12 @@ model User {
   id                             Int      @id @default(autoincrement())
   account                        String   @db.VarChar(50)
   name                           String   @db.VarChar(20)
-  password                       String   @db.VarChar(100)
+  password                       String   @db.VarChar(200)
   phoneNumber                    String   @map("phone_number") @db.VarChar(15)
   address                        String   @db.VarChar(100)
   gender                         String   @db.VarChar(20)
   birthday                       DateTime @db.Date
-  createdAt                      DateTime @map("created_at") @db.Timestamp
+  createdAt                      DateTime @default(now()) @map("created_at")
   mandatoryPolicyAgreed          Boolean  @map("mandatory_policy_agreed") @db.TinyInt
   personalInfomationPolicyAgreed Boolean  @map("personal_information_policy_agreed") @db.TinyInt
   marketingPolicyAgreed          Boolean  @map("marketing_policy_agreed") @db.TinyInt
@@ -29,58 +29,68 @@ model User {
   @@map("users")
 }
 
-model Review {
+model Category {
   id        Int       @id @default(autoincrement())
-  title     String    @db.VarChar(1000)
-  text      String    @db.VarChar(3000)
-  user      User      @relation(fields: [userId], references: [id])
-  userId    Int       @map("user_id")
-  createdAt DateTime  @map("created_at") @db.Timestamp
-  updatedAt DateTime? @map("updated_at") @db.Timestamp
+  name      String    @db.VarChar(30)
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @map("updated_at")
 
-  @@map("reviews")
+  subCategory SubCategory[]
+  product     Product[]
+  @@map("categories")
 }
 
-model ReviewOnLike {
-  reviewId Int
-  userId   Int
+model SubCategory {
+  id         Int       @id @default(autoincrement())
+  name       String    @db.VarChar(30)
+  categoryId Int       @map("sub_category_id")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime? @map("updated_at")
 
-  @@id([reviewId, userId])
-  @@map("reviews_likes")
+  category Category  @relation(fields: [categoryId], references: [id])
+  product  Product[]
+  @@map("sub_categories")
 }
 
 model Product {
-  id               Int             @id @default(autoincrement())
-  nameKorean       String          @map("name_korean") @db.VarChar(40)
-  thumbUrl         String          @map("thumb_url") @db.VarChar(2000)
-  shortDescription String          @map("short_description") @db.VarChar(200)
-  originalPrice    Int             @map("original_price")
-  discountRate     Int             @map("discount_rate")
-  salesPrice       Int             @map("sales_price")
-  ProductDetail    ProductDetail[]
+  id               Int       @id @default(autoincrement())
+  nameKorean       String    @map("name_korean") @db.VarChar(40)
+  thumbUrl         String    @map("thumb_url") @db.VarChar(2000)
+  shortDescription String    @map("short_description") @db.VarChar(200)
+  originalPrice    Int       @map("original_price")
+  discount         Int
+  cost             Int
+  discountRate     Int       @map("discount_rate")
+  salesPrice       Int       @map("sales_price")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime? @map("updated_at")
+  categoryId       Int       @map("category_id")
+  subCategoryId    Int       @map("sub_category_id")
 
-  Cart  Cart[]
-  Order Order[]
+  category      Category        @relation(fields: [categoryId], references: [id])
+  subCategory   SubCategory     @relation(fields: [subCategoryId], references: [id])
+  ProductDetail ProductDetail[]
+  Cart          Cart[]
+  Order         Order[]
 
   @@map("products")
 }
 
 model ProductDetail {
-  id               Int              @id @default(autoincrement())
-  earnPoint        Int              @map("earn_point")
-  saleUnit         String           @map("sale_unit") @db.VarChar(10)
-  weightOrCapacity String           @map("weight_or_capacity") @db.VarChar(20)
-  deliveryType     String           @map("delivery_type") @db.VarChar(20)
-  originCountry    String           @map("origin_country") @db.VarChar(10)
-  packageType      String           @map("package_type") @db.VarChar(20)
-  packageMessage   String           @map("package_message") @db.VarChar(200)
-  notification     String           @map("notification") @db.VarChar(200)
-  allergenInfo     String           @map("allergen_information") @db.VarChar(200)
-  storageType      String           @map("storage_type")
-  storageTemp      StorageTemporary @relation(fields: [storageType], references: [storageType])
-  product          Product          @relation(fields: [productId], references: [id])
-  productId        Int              @map("products_id")
-
+  id                      Int                       @id @default(autoincrement())
+  earnPoint               Int                       @map("earn_point")
+  saleUnit                String                    @map("sale_unit") @db.VarChar(10)
+  weightOrCapacity        String?                   @map("weight_or_capacity") @db.VarChar(20)
+  deliveryType            String                    @map("delivery_type") @db.VarChar(20)
+  originCountry           String?                   @map("origin_country") @db.VarChar(10)
+  packageType             String                    @map("package_type") @db.VarChar(20)
+  packageMessage          String?                   @map("package_message") @db.VarChar(400)
+  notification            String?                   @map("notification") @db.VarChar(400)
+  allergenInfo            String?                   @map("allergen_information") @db.VarChar(200)
+  storageId               Int                       @map("storage_id")
+  storageTemporary        StorageTemporary          @relation(fields: [storageId], references: [id])
+  productId               Int                       @map("products_id")
+  product                 Product                   @relation(fields: [productId], references: [id])
   Cart                    Cart[]
   Order                   Order[]
   AdditionalInformation   AdditionalInformation[]
@@ -92,7 +102,7 @@ model ProductDetail {
 
 model AdditionalInformation {
   id                    Int           @id @default(autoincrement())
-  additionalInformation String        @map("additional_information") @db.VarChar(200)
+  additionalInformation String?       @map("additional_information") @db.VarChar(200)
   productDetailId       Int           @map("product_detail_id")
   productDetail         ProductDetail @relation(fields: [productDetailId], references: [id])
 
@@ -113,15 +123,15 @@ model DescriptionIntroduction {
 
 model DescriptionInformation {
   id                Int           @id @default(autoincrement())
-  information_image String        @db.VarChar(200)
+  information_image String        @db.VarChar(2000)
   product_name      String        @db.VarChar(20)
-  certification     String        @db.VarChar(20)
-  packaging_unit    String        @db.VarChar(20)
-  matter_note       String        @db.VarChar(100)
+  certification     String?       @db.VarChar(20)
+  packaging_unit    String?       @db.VarChar(20)
+  matter_note       String?       @db.VarChar(100)
   producer          String        @db.VarChar(100)
-  how_to_store      String        @db.VarChar(100)
-  origin_country    String        @db.VarChar(20)
-  service_call      String        @db.VarChar(40)
+  how_to_store      String?       @db.VarChar(100)
+  origin_country    String?       @db.VarChar(20)
+  service_call      String?       @db.VarChar(40)
   produce_date      String        @db.VarChar(100)
   productDetailId   Int           @map("product_detail_id")
   productDetail     ProductDetail @relation(fields: [productDetailId], references: [id])
@@ -130,20 +140,19 @@ model DescriptionInformation {
 }
 
 model Cart {
-  id              Int              @id @default(autoincrement())
-  userId          Int              @map("user_id")
-  user            User             @relation(fields: [userId], references: [id])
-  productId       Int              @map("product_id")
-  product         Product          @relation(fields: [productId], references: [id])
-  productDetailId Int              @map("product_detail_id")
-  productDetail   ProductDetail    @relation(fields: [productDetailId], references: [id])
-  storageType     String           @map("storage_type")
-  storageTemp     StorageTemporary @relation(fields: [storageType], references: [storageType])
-  quantity        Int
+  id               Int              @id @default(autoincrement())
+  userId           Int              @map("user_id")
+  user             User             @relation(fields: [userId], references: [id])
+  productId        Int              @map("product_id")
+  product          Product          @relation(fields: [productId], references: [id])
+  productDetailId  Int              @map("product_detail_id")
+  productDetail    ProductDetail    @relation(fields: [productDetailId], references: [id])
+  storageId        Int              @map("storage_id")
+  StorageTemporary StorageTemporary @relation(fields: [storageId], references: [id])
+  quantity         Int
 
   Order Order[]
   User  User[]  @relation("cartId")
-
   @@map("carts")
 }
 
@@ -158,17 +167,37 @@ model StorageTemporary {
 }
 
 model Order {
-  id              Int              @id @default(autoincrement())
-  userId          Int              @map("user_id")
-  user            User             @relation(fields: [userId], references: [id])
-  productId       Int              @map("product_id")
-  product         Product          @relation(fields: [productId], references: [id])
-  productDetailId Int              @map("product_detail_id")
-  productDetail   ProductDetail    @relation(fields: [productDetailId], references: [id])
-  storageType     String           @map("storage_type")
-  storageTemp     StorageTemporary @relation(fields: [storageType], references: [storageType])
-  cartId          Int              @map("cart_id")
-  cart            Cart             @relation(fields: [cartId], references: [id])
+  id               Int              @id @default(autoincrement())
+  userId           Int              @map("user_id")
+  user             User             @relation(fields: [userId], references: [id])
+  productId        Int              @map("product_id")
+  product          Product          @relation(fields: [productId], references: [id])
+  productDetailId  Int              @map("product_detail_id")
+  productDetail    ProductDetail    @relation(fields: [productDetailId], references: [id])
+  storageId        Int              @map("storage_id")
+  StorageTemporary StorageTemporary @relation(fields: [storageId], references: [id])
+  cartId           Int              @map("cart_id")
+  cart             Cart             @relation(fields: [cartId], references: [id])
 
   @@map("orders")
+}
+
+model Review {
+  id        Int       @id @default(autoincrement())
+  title     String    @db.VarChar(1000)
+  text      String    @db.VarChar(3000)
+  user      User      @relation(fields: [userId], references: [id])
+  userId    Int       @map("user_id")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @map("updated_at")
+
+  @@map("reviews")
+}
+
+model ReviewOnLike {
+  reviewId Int
+  userId   Int
+
+  @@id([reviewId, userId])
+  @@map("reviews_likes")
 }
