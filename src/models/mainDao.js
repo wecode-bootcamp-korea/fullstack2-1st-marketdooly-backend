@@ -9,11 +9,11 @@ const getCategories = async () => {
   `;
 };
 
-const getCarouselData = async (id) => {
+const getCarouselDataById = async (id) => {
   return await prisma.$queryRaw`
   SELECT  i.img_url
         , p.id
-        , p.name as product_name
+        , p.name_korean
         , p.price
         , p.discount
         , p.discount_rate
@@ -33,14 +33,16 @@ const getMainBannerData = async () => {
 
 const getSpecialPriceData = async () => {
   return await prisma.$queryRaw`
-  SELECT i.special_price_image_url
-  FROM images i
+  SELECT  i.special_price_image_url
+        , p.short_description
+  FROM  images i
+      , products p
   `
 }
 
 export default {
   getCategories,
-  getCarouselData,
+  getCarouselDataById,
   getMainBannerData,
   getSpecialPriceData
 }

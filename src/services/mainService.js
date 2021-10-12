@@ -4,8 +4,8 @@ const getCategories = async () => {
   return await mainDao.getCategories();
 }
 
-const getCarouselData = async (id) => {
-  return await mainDao.getCarouselData(id);
+const getCarouselDataById = async (id) => {
+  return await mainDao.getCarouselDataById(id);
 }
 
 const getMainBannerData = async () => {
@@ -18,7 +18,7 @@ const getSpecialPriceData = async () => {
 
 export default {
   getCategories,
-  getCarouselData,
+  getCarouselDataById,
   getMainBannerData,
   getSpecialPriceData
 }

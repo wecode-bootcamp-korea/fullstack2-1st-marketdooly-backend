@@ -1,18 +1,8 @@
 import { mainService } from '../services'
 
-const getProducts = async (req, res) => {
+const getCategoriesById = async (req, res) => {
   try{
-    const products = await mainService.getProducts();
-    res.status(200).json(products);
-  }
-  catch(err) {
-    console.error(err);
-  };
-};
-
-const getCategories = async (req, res) => {
-  try{
-    const categories = await mainService.getCategories();
+    const categories = await mainService.getCategoriesById();
     res.status(200).json(categories);
   }
   catch(err) {
@@ -52,9 +42,8 @@ const getSpecialPriceData = async (req, res) => {
 };
 
 export default {
-  getProducts,
   getCategories,
-  getCarouselData,
+  getCarouselDataById,
   getMainBannerData,
   getSpecialPriceData
 }
