@@ -1,5 +1,5 @@
 import cartService from './cartService';
+import detailService from './detailService';
 import reviewService from './reviewService';
-export { cartService, reviewService };
+export { cartService, detailService, reviewService };
 
-export {  };
