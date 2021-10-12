@@ -29,7 +29,7 @@ model Image {
   id                 Int       @id @default(autoincrement())
   imgUrl             String    @map("image_url") @db.VarChar(2000)
   mainbannerImgUrl   String    @map("mainbanner_image_url") @db.VarChar(2000)
-  specialPriceImgUrl String    @map("specialPrice_image_url") @db.VarChar(2000)
+  specialPriceImgUrl String    @map("special_price_image_url") @db.VarChar(2000)
   uplodedAt          DateTime  @default(now()) @map("uploded_at")
   productId          Int       @map("product_id")
   createdAt          DateTime  @default(now()) @map("created_at")
