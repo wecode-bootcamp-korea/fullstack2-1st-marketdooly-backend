@@ -1,6 +1,9 @@
 import { userDao } from '../models';
-import middlewares from '../../middlewares';
 import utils from '../utils';
+
+const getAllUsers = async () => {
+  return await userDao.getAllUsers();
+};
 
 const login = async (account, password) => {
   const [userHash] = await userDao.searchUserPw(account);
@@ -62,4 +65,4 @@ const findPassword = async (account, email, name) => {
   }
 };
 
-export default { login, signUp, findUser, findPassword };
+export default { getAllUsers, login, signUp, findUser, findPassword };

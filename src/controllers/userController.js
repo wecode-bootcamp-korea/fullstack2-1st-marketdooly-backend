@@ -1,6 +1,29 @@
 import { userService } from '../services';
 import tokenController from '../../middlewares/tokenController';
 
+const getAllUsers = async (req, res) => {
+  try {
+    const { info } = req.headers.payload;
+    const { account, name, email } = info[0];
+    if (
+      account !== 'onecookie' ||
+      name !== '이원국' ||
+      email !== 'const.wonkook@gmail.com'
+    )
+      throw new Error('접근 권한 없음');
+    const result = await userService.getAllUsers();
+    res.status(200).json({
+      status: 'success',
+      result,
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err.message,
+    });
+  }
+};
+
 const signUp = async (req, res) => {
   try {
     const userInfo = req.body;
@@ -63,4 +86,4 @@ const findPassword = async (req, res) => {
   }
 };
 
-export default { signUp, login, findUser, findPassword };
+export default { getAllUsers, signUp, login, findUser, findPassword };

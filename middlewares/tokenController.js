@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config({ path: `${__dirname}/../.env` });
 import jwt from 'jsonwebtoken';
-import utils from '../src/utils';
 
 const cookieOptions = {
   httpOnly: true,
@@ -11,7 +10,7 @@ const cookieOptions = {
 const issueAccessToken = info => {
   return jwt.sign({ info }, process.env.JWT_SECRET_KEY, {
     issuer: 'marketdooly',
-    expiresIn: process.env.JWT_EXPIRES_IN,
+    expiresIn: '1h',
   });
 };
 
@@ -25,4 +24,23 @@ const createSendToken = async (info, statusCode, res) => {
   });
 };
 
-export default { issueAccessToken, createSendToken };
+const verifyToken = async (req, res, next) => {
+  try {
+    let accessToken;
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith('Bearer')
+    ) {
+      accessToken = req.headers.authorization.split(' ')[1];
+    } else {
+      return next(new Error('접근 권한이 없습니다.'));
+    }
+    const payload = await jwt.verify(accessToken, process.env.JWT_SECRET_KEY);
+    req.headers.payload = payload;
+    next();
+  } catch (err) {
+    next(err);
+  }
+};
+
+export default { issueAccessToken, createSendToken, verifyToken };

@@ -1,5 +1,14 @@
 import prisma from '../../prisma';
 
+const getAllUsers = async () => {
+  return await prisma.$queryRaw`
+  SELECT
+  *
+  FROM
+  users
+  `;
+};
+
 const searchUserId = async accountName => {
   return await prisma.$queryRaw`
   SELECT
@@ -106,6 +115,7 @@ const getBasicUserInfo = async accountName => {
 };
 
 export default {
+  getAllUsers,
   searchUserId,
   searchUserPw,
   createUser,
