@@ -1,7 +1,7 @@
 import { detailDao } from '../models';
 
-const getDetail = async (req) => {
-  await detailDao.getDetail();
+const getProductDetail = async (req) => {
+  await detailDao.getProductDetail();
 };
 
-export default { getDetail };
+export default { getProductDetail };

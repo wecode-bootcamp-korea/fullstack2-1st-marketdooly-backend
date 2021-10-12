@@ -3,6 +3,6 @@ import { detailController } from '../controllers';
 
 const detailRouter = express.Router();
 
-detailRouter.get('', detailController.getDetail);
+detailRouter.get('', detailController.getProductDetaill);
 
 export default detailRouter;

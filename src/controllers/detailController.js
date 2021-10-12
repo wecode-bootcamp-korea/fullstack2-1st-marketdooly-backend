@@ -1,11 +1,11 @@
 import { detailService } from '../services';
 
-const getDetail = async (req, res) => {
+const getProductDetail = async (req, res) => {
   try {
-    const getDetail = await detailService.getDetail();
-    res.status(200).json(getDetail);
+    const getProductDetail = await detailService.getDetail();
+    res.status(200).json(getProductDetail);
   } catch (err) {}
 };
 
 
-export default { getDetail };
+export default { getProductDetail };
