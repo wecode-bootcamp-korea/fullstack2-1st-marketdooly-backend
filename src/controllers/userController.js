@@ -1,4 +1,5 @@
 import { userService } from '../services';
+import tokenController from '../../middlewares/tokenController';
 
 const signUp = async (req, res) => {
   try {
@@ -20,10 +21,7 @@ const login = async (req, res) => {
   try {
     const { account, password } = req.body;
     const result = await userService.login(account, password);
-    res.status(200).json({
-      status: 'success',
-      result,
-    });
+    await tokenController.createSendToken(result, 200, res);
   } catch (err) {
     res.status(400).json({
       status: 'fail',
@@ -51,10 +49,11 @@ const findUser = async (req, res) => {
 const findPassword = async (req, res) => {
   try {
     const { account, email, name } = req.body;
-    await userService.findPassword(account, email, name);
+    const result = await userService.findPassword(account, email, name);
     res.status(200).json({
       status: 'success',
-      message: '이메일로 인증 완료후 비밀번호를 재발급 받으세요!',
+      message: '새로운 임시 비밀번호가 발급되었습니다!',
+      tempPW: result,
     });
   } catch (err) {
     res.status(400).json({

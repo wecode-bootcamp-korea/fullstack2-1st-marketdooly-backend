@@ -71,7 +71,7 @@ const createUser = async userData => {
 const findUser = async (email, name) => {
   return await prisma.$queryRaw`
   SELECT
-  users.password
+  users.account
   FROM
   users
   WHERE
@@ -81,4 +81,35 @@ const findUser = async (email, name) => {
   `;
 };
 
-export default { searchUserId, searchUserPw, createUser, findUser };
+const resetPassword = async (account, password) => {
+  return await prisma.$queryRaw`
+  UPDATE
+  users
+  SET
+  password = ${password}
+  WHERE
+  account = ${account}
+  `;
+};
+
+const getBasicUserInfo = async accountName => {
+  return await prisma.$queryRaw`
+  SELECT
+  users.account,
+  users.name,
+  users.email
+  FROM
+  users
+  WHERE
+  users.account = ${accountName}
+  `;
+};
+
+export default {
+  searchUserId,
+  searchUserPw,
+  createUser,
+  findUser,
+  resetPassword,
+  getBasicUserInfo,
+};
