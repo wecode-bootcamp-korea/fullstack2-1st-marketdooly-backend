@@ -2,7 +2,7 @@ import { cartService } from '../services';
 
 const getCart = async (req, res) => {
   try {
-    const getCart = await cartService.getCart(userId);
+    const getCart = await cartService.getCart();
     res.status(200).json(getCart);
   } catch (err) {
     console.log(err);

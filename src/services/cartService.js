@@ -1,7 +1,7 @@
 import { cartDao } from '../models';
 
 const getCart = async () => {
-  const getCart = await cartDao.getCart(userId);
+  const getCart = await cartDao.getCart();
   return getCart;
 };
 

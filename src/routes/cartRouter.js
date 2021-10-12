@@ -4,7 +4,7 @@ import { cartController } from '../controllers';
 const cartRouter = express.Router();
 
 cartRouter
-  .get('', verifyToken, cartController.getCart)
+  .get('', cartController.getCart)
   .put('', cartController.updateItemQuantity)
   .delete('', cartController.deleteItem)
   .post('', cartController.postCart);

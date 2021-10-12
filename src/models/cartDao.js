@@ -1,10 +1,9 @@
 import prisma from '../../prisma';
 
-const getCart = async userId => {
+const getCart = async () => {
   return await prisma.$queryRaw`
   SELECT c.user_id, c.address, c.cart_id
   FROM carts c
-  WHERE user_id=${userId}
   `;
 };
 
