@@ -1,17 +1,5 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-import mainService from "./mainService";
-
-export { mainService }
-=======
-=======
->>>>>>> master
 import cartService from './cartService';
 import reviewService from './reviewService';
-export { cartService, reviewService };
+import mainService from "./mainService";
 
-export {  };
-<<<<<<< HEAD
->>>>>>> master
-=======
->>>>>>> master
+export { cartService, reviewService, mainService };

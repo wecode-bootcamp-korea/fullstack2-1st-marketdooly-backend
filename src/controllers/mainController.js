@@ -1,8 +1,8 @@
 import { mainService } from '../services'
 
-const getCategoriesById = async (req, res) => {
+const getCategories = async (req, res) => {
   try{
-    const categories = await mainService.getCategoriesById();
+    const categories = await mainService.getCategories();
     res.status(200).json(categories);
   }
   catch(err) {
@@ -10,10 +10,10 @@ const getCategoriesById = async (req, res) => {
   };
 };
 
-const getCarouselData = async (req, res) => {
+const getCarouselDataById = async (req, res) => {
   try{
     const id = req.params.id;
-    const carouselData = await mainService.getCarouselData(id);
+    const carouselData = await mainService.getCarouselDataById(id);
     res.status(200).json(carouselData);
   }
   catch(err) {
