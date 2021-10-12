@@ -10,7 +10,13 @@ const router = express.Router();
 router.get('/', (req, res) => res.send('Welcome to Market Dooly &#128516;'));
 router.use('/ping', pingRouter);
 <<<<<<< HEAD
+<<<<<<< HEAD
 router.get('/main', mainRouter);
+=======
+router.use('/cart', cartRouter);
+router.use('/products/:id/reviews', reviewRouter);
+
+>>>>>>> master
 =======
 router.use('/cart', cartRouter);
 router.use('/products/:id/reviews', reviewRouter);
