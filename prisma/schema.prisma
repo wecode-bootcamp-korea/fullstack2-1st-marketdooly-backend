@@ -41,6 +41,14 @@ model Review {
   @@map("reviews")
 }
 
+model ReviewOnLike {
+  reviewId Int
+  userId   Int
+
+  @@id([reviewId, userId])
+  @@map("reviews_likes")
+}
+
 model Product {
   id               Int             @id @default(autoincrement())
   nameKorean       String          @map("name_korean") @db.VarChar(40)
@@ -53,30 +61,32 @@ model Product {
 
   Cart  Cart[]
   Order Order[]
+
   @@map("products")
 }
 
 model ProductDetail {
-  id               Int         @id @default(autoincrement())
-  earnPoint        Int         @map("earn_point")
-  saleUnit         String      @map("sale_unit") @db.VarChar(10)
-  weightOrCapacity String      @map("weight_or_capacity") @db.VarChar(20)
-  deliveryType     String      @map("delivery_type") @db.VarChar(20)
-  originCountry    String      @map("origin_country") @db.VarChar(10)
-  packageType      String      @map("package_type") @db.VarChar(20)
-  packageMessage   String      @map("package_message") @db.VarChar(200)
-  notification     String      @map("notification") @db.VarChar(200)
-  allergenInfo     String      @map("allergen_information") @db.VarChar(200)
-  storageType      String      @map("storage_type")
-  storageTemp      StorageTemp @relation(fields: [storageType], references: [storageType])
-  product          Product     @relation(fields: [productId], references: [id])
-  productId        Int         @map("products_id")
+  id               Int              @id @default(autoincrement())
+  earnPoint        Int              @map("earn_point")
+  saleUnit         String           @map("sale_unit") @db.VarChar(10)
+  weightOrCapacity String           @map("weight_or_capacity") @db.VarChar(20)
+  deliveryType     String           @map("delivery_type") @db.VarChar(20)
+  originCountry    String           @map("origin_country") @db.VarChar(10)
+  packageType      String           @map("package_type") @db.VarChar(20)
+  packageMessage   String           @map("package_message") @db.VarChar(200)
+  notification     String           @map("notification") @db.VarChar(200)
+  allergenInfo     String           @map("allergen_information") @db.VarChar(200)
+  storageType      String           @map("storage_type")
+  storageTemp      StorageTemporary @relation(fields: [storageType], references: [storageType])
+  product          Product          @relation(fields: [productId], references: [id])
+  productId        Int              @map("products_id")
 
   Cart                    Cart[]
   Order                   Order[]
   AdditionalInformation   AdditionalInformation[]
   DescriptionIntroduction DescriptionIntroduction[]
   DescriptionInformation  DescriptionInformation[]
+
   @@map("products_details")
 }
 
@@ -120,44 +130,45 @@ model DescriptionInformation {
 }
 
 model Cart {
-  id              Int           @id @default(autoincrement())
-  userId          Int           @map("user_id")
-  user            User          @relation(fields: [userId], references: [id])
-  productId       Int           @map("product_id")
-  product         Product       @relation(fields: [productId], references: [id])
-  productDetailId Int           @map("product_detail_id")
-  productDetail   ProductDetail @relation(fields: [productDetailId], references: [id])
-  storageType     String        @map("storage_type")
-  storageTemp     StorageTemp   @relation(fields: [storageType], references: [storageType])
+  id              Int              @id @default(autoincrement())
+  userId          Int              @map("user_id")
+  user            User             @relation(fields: [userId], references: [id])
+  productId       Int              @map("product_id")
+  product         Product          @relation(fields: [productId], references: [id])
+  productDetailId Int              @map("product_detail_id")
+  productDetail   ProductDetail    @relation(fields: [productDetailId], references: [id])
+  storageType     String           @map("storage_type")
+  storageTemp     StorageTemporary @relation(fields: [storageType], references: [storageType])
   quantity        Int
 
   Order Order[]
   User  User[]  @relation("cartId")
+
   @@map("carts")
 }
 
-model StorageTemp {
+model StorageTemporary {
   id          Int    @id @default(autoincrement())
   storageType String
 
   ProductDetail ProductDetail[]
   Cart          Cart[]
   Order         Order[]
-  @@map("storage_temps")
+  @@map("storage_temporarys")
 }
 
 model Order {
-  id              Int           @id @default(autoincrement())
-  userId          Int           @map("user_id")
-  user            User          @relation(fields: [userId], references: [id])
-  productId       Int           @map("product_id")
-  product         Product       @relation(fields: [productId], references: [id])
-  productDetailId Int           @map("product_detail_id")
-  productDetail   ProductDetail @relation(fields: [productDetailId], references: [id])
-  storageType     String        @map("storage_type")
-  storageTemp     StorageTemp   @relation(fields: [storageType], references: [storageType])
-  cartId          Int           @map("cart_id")
-  cart            Cart          @relation(fields: [cartId], references: [id])
+  id              Int              @id @default(autoincrement())
+  userId          Int              @map("user_id")
+  user            User             @relation(fields: [userId], references: [id])
+  productId       Int              @map("product_id")
+  product         Product          @relation(fields: [productId], references: [id])
+  productDetailId Int              @map("product_detail_id")
+  productDetail   ProductDetail    @relation(fields: [productDetailId], references: [id])
+  storageType     String           @map("storage_type")
+  storageTemp     StorageTemporary @relation(fields: [storageType], references: [storageType])
+  cartId          Int              @map("cart_id")
+  cart            Cart             @relation(fields: [cartId], references: [id])
 
   @@map("orders")
 }
