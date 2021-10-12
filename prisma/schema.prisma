@@ -37,13 +37,14 @@ model Category {
 
   subCategory SubCategory[]
   product     Product[]
+  mdsPick     MdsPick[]
   @@map("categories")
 }
 
 model SubCategory {
   id         Int       @id @default(autoincrement())
   name       String    @db.VarChar(30)
-  categoryId Int       @map("sub_category_id")
+  categoryId Int       @map("category_id")
   createdAt  DateTime  @default(now()) @map("created_at")
   updatedAt  DateTime? @map("updated_at")
 
@@ -72,6 +73,10 @@ model Product {
   ProductDetail ProductDetail[]
   Cart          Cart[]
   Order         Order[]
+  suggestions   Suggestions[]
+  mdsPick       MdsPick[]
+  lastCall      LastCall[]
+  specilaPrices SpecialPrices[]
 
   @@map("products")
 }
@@ -200,4 +205,55 @@ model ReviewOnLike {
 
   @@id([reviewId, userId])
   @@map("reviews_likes")
+}
+
+model Suggestions {
+  id           Int      @id @default(autoincrement())
+  registeredAt DateTime @default(now()) @map("registered_at")
+  productId    Int      @map("product_id")
+  product      Product  @relation(fields: [productId], references: [id])
+
+  events Events[]
+}
+
+model MdsPick {
+  id           Int      @id @default(autoincrement())
+  registeredAt DateTime @default(now()) @map("registered_at")
+  productId    Int      @map("product_id")
+  product      Product  @relation(fields: [productId], references: [id])
+  cateoryId    Int      @map("category_id")
+  category     Category @relation(fields: [cateoryId], references: [id])
+
+  events Events[]
+  @@map("mds_pick")
+}
+
+model LastCall {
+  id           Int      @id @default(autoincrement())
+  registeredAt DateTime @default(now()) @map("registered_at")
+  productId    Int      @map("product_id")
+  product      Product  @relation(fields: [productId], references: [id])
+
+  events Events[]
+  @@map("last_call")
+}
+
+model SpecialPrices {
+  id           Int      @id @default(autoincrement())
+  registeredAt DateTime @default(now()) @map("registered_at")
+  productId    Int      @map("product_id")
+  product      Product  @relation(fields: [productId], references: [id])
+
+  events Events[]
+  @@map("special_prices")
+}
+
+model Events {
+  id            Int           @id @default(autoincrement())
+  name          String        @db.VarChar(50)
+  eventId       Int           @map("event_id")
+  specialPrices SpecialPrices @relation(fields: [eventId], references: [id])
+  lastCall      LastCall      @relation(fields: [eventId], references: [id])
+  mdsPick       MdsPick       @relation(fields: [eventId], references: [id])
+  suggestions   Suggestions   @relation(fields: [eventId], references: [id])
 }
