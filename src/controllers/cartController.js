@@ -29,14 +29,14 @@ const deleteItem = async (req, res) => {
   }
 };
 
-const postCart = async (req, res) => {
+const addToCart = async (req, res) => {
   const { cartData } = req.body;
   try {
-    const postCart = await cartDao.postCart(cartData);
-    res.status(200).json({ message: 'POST_SUCCESS', postCart });
+    const addToCart = await cartService.addToCart(cartData);
+    res.status(200).json({ message: 'ADDED_TO_CART', addToCart });
   } catch (err) {
     console.log(err);
   }
 };
 
-export default { getCart, updateItemQuantity, deleteItem, postCart };
+export default { getCart, updateItemQuantity, deleteItem, addToCart };

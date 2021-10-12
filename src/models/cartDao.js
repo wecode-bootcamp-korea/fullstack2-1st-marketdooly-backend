@@ -1,9 +1,24 @@
 import prisma from '../../prisma';
 
-const getCart = async () => {
+const getCart = async id => {
   return await prisma.$queryRaw`
-  SELECT c.user_id, c.address, c.cart_id
-  FROM carts c
+  SELECT  u.address,
+          c.id,
+          c.quantity,
+          p.name_korean,
+          p.thumb_url,
+          p.original_price,
+          p.sales_price,
+          d.earn_point,
+          d.storage_type
+    FROM  users u,
+          carts c,
+          products p,
+          products_details d
+    WHERE u.id=${id}
+      AND c.user_id=u.id
+      AND c.product_id=p.id
+      AND c.product_detail_id=d.id
   `;
 };
 
@@ -22,31 +37,17 @@ const deleteItem = async () => {
   `;
 };
 
-const postCart = async cartData => {
-  const {
-    address,
-    name_kor,
-    sales_price,
-    original_price,
-    earn_point,
-    storage_temp,
-    thumb_url,
-    quantity,
-  } = cartData;
+const addToCart = async cartData => {
+  const { product_id, product_detail_id, quantity } = cartData;
   return await prisma.$queryRaw`
-  INSERT INTO orders
-    ( address, name_kor, sales_price, original_price, earn_point, storage_temp, thumb_url, quantity )
+  INSERT INTO carts
+    ( product_id, product_detail_id, quantity )
   VALUES (
-    ${address},
-    ${name_kor},
-    ${sales_price},
-    ${original_price},
-    ${earn_point},
-    ${storage_temp},
-    ${thumb_url},
+    ${product_id},
+    ${product_detail_id},
     ${quantity}
   )
   `;
 };
 
-export default { getCart, updateItemQuantity, deleteItem, postCart };
+export default { getCart, updateItemQuantity, deleteItem, addToCart };

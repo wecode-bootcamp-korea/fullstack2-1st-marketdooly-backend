@@ -7,6 +7,6 @@ cartRouter
   .get('', cartController.getCart)
   .put('', cartController.updateItemQuantity)
   .delete('', cartController.deleteItem)
-  .post('', cartController.postCart);
+  .post('/:id', cartController.addToCart);
 
 export default cartRouter;

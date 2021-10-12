@@ -1,7 +1,7 @@
 import { cartDao } from '../models';
 
-const getCart = async () => {
-  const getCart = await cartDao.getCart();
+const getCart = async userId => {
+  const getCart = await cartDao.getCart(userId);
   return getCart;
 };
 
@@ -15,9 +15,9 @@ const deleteItem = async cartId => {
   return deleteItem;
 };
 
-const postCart = async cartData => {
-  const postCart = await cartDao.postCart(cartData);
-  return postCart;
+const addToCart = async cartData => {
+  const addToCart = await cartDao.addToCart(cartData);
+  return addToCart;
 };
 
-export default { getCart, updateItemQuantity, deleteItem, postCart };
+export default { getCart, updateItemQuantity, deleteItem, addToCart };
