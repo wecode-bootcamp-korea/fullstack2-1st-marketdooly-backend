@@ -3,7 +3,7 @@ import { mainService } from '../services'
 const getProducts = async (req, res) => {
   try{
     const products = await mainService.getProducts();
-    res.json(products);
+    res.status(200).json(products);
   }
   catch(err) {
     console.error(err);
@@ -13,10 +13,10 @@ const getProducts = async (req, res) => {
 const getCategories = async (req, res) => {
   try{
     const categories = await mainService.getCategories();
-    res.json(categories);
+    res.status(200).json(categories);
   }
   catch(err) {
-    console.log(err);
+    console.error(err);
   };
 };
 
@@ -24,30 +24,30 @@ const getCarouselData = async (req, res) => {
   try{
     const id = req.params.id;
     const carouselData = await mainService.getCarouselData(id);
-    res.json(carouselData);
+    res.status(200).json(carouselData);
   }
   catch(err) {
-    console.log(err);
+    console.error(err);
   };
 };
 
 const getMainBannerData = async (req, res) => {
   try{
     const mainBannerData = await mainService.getMainBannerData();
-    res.json(mainBannerData);
+    res.status(200).json(mainBannerData);
   }
   catch(err) {
-    console.log(err);
+    console.error(err);
   }
 }
 
 const getSpecialPriceData = async (req, res) => {
   try{
     const specialPriceData = await mainService.getSpecialPriceData();
-    res.json(specialPriceData);
+    res.status(200).json(specialPriceData);
   }
   catch(err) {
-    console.log(err);
+    console.error(err);
   };
 };
 
