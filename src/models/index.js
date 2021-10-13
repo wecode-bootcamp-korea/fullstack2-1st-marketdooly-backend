@@ -1,4 +1,4 @@
-import mainDao from "./mainDao";
+import mainDao from './mainDao';
 import cartDao from './cartDao';
 import reviewDao from './reviewDao';
 import detailDao from './detailDao';
