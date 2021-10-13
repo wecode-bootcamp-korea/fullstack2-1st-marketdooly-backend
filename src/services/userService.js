@@ -5,6 +5,18 @@ const getAllUsers = async () => {
   return await userDao.getAllUsers();
 };
 
+const checkDuplicateAccount = async account => {
+  const result = await userDao.searchUserId(account);
+  if (result.length) throw new Error('이미 존재하는 계정 이름입니다!');
+  return null;
+};
+
+const checkDuplicateEmail = async email => {
+  const result = await userDao.searchUserEmail(email);
+  if (result.length) throw new Error('이미 존재하는 이메일입니다!');
+  return null;
+};
+
 const login = async (account, password) => {
   const [userHash] = await userDao.searchUserPw(account);
   if (userHash.password) {
@@ -36,9 +48,9 @@ const signUp = async userData => {
   }
 };
 
-const findUser = async (email, name) => {
+const findAccount = async (email, name) => {
   try {
-    const result = await userDao.findUser(email, name);
+    const result = await userDao.findAccount(email, name);
     if (!result.length)
       throw new Error(
         '고객님께서 입력하신 정보가 정확한지 다시 한 번 확인해주세요!'
@@ -51,7 +63,7 @@ const findUser = async (email, name) => {
 
 const findPassword = async (account, email, name) => {
   try {
-    const result = await userDao.findUser(email, name);
+    const result = await userDao.findAccount(email, name);
     if (!result.length || result[0].account !== account)
       throw new Error(
         '고객님께서 입력하신 정보가 정확한지 다시 한 번 확인해주세요!'
@@ -65,4 +77,12 @@ const findPassword = async (account, email, name) => {
   }
 };
 
-export default { getAllUsers, login, signUp, findUser, findPassword };
+export default {
+  getAllUsers,
+  login,
+  signUp,
+  findAccount,
+  findPassword,
+  checkDuplicateAccount,
+  checkDuplicateEmail,
+};
