@@ -3,31 +3,42 @@ import prisma from '../../prisma';
 const getAllUsers = async () => {
   return await prisma.$queryRaw`
   SELECT
-  *
+    *
   FROM
-  users
+    users
+  `;
+};
+
+const searchUserEmail = async email => {
+  return await prisma.$queryRaw`
+  SELECT
+    u.email
+  FROM
+    users u
+  WHERE
+    u.email = ${email}
   `;
 };
 
 const searchUserId = async accountName => {
   return await prisma.$queryRaw`
   SELECT
-  users.account
+    u.account
   FROM
-  users
+    users u
   WHERE
-  users.account = ${accountName}
+    u.account = ${accountName}
   `;
 };
 
 const searchUserPw = async accountName => {
   return await prisma.$queryRaw`
   SELECT
-  users.password
+    u.password
   FROM
-  users
+    users u
   WHERE
-  users.account = ${accountName}
+    u.account = ${accountName}
   `;
 };
 
@@ -77,49 +88,51 @@ const createUser = async userData => {
   `;
 };
 
-const findUser = async (email, name) => {
+const findAccount = async (email, name) => {
   return await prisma.$queryRaw`
   SELECT
-  users.account
+    u.account
   FROM
-  users
+    users u
   WHERE
-  users.email = ${email}
+    u.email = ${email}
   AND
-  users.name =${name}
+    u.name =${name}
   `;
 };
 
 const resetPassword = async (account, password) => {
   return await prisma.$queryRaw`
   UPDATE
-  users
+    users
   SET
-  password = ${password}
+    password = ${password}
   WHERE
-  account = ${account}
+    account = ${account}
   `;
 };
 
 const getBasicUserInfo = async accountName => {
   return await prisma.$queryRaw`
   SELECT
-  users.account,
-  users.name,
-  users.email
+    u.id,
+    u.account,
+    u.name,
+    u.email
   FROM
-  users
+    users u
   WHERE
-  users.account = ${accountName}
+    u.account = ${accountName}
   `;
 };
 
 export default {
   getAllUsers,
+  searchUserEmail,
   searchUserId,
   searchUserPw,
   createUser,
-  findUser,
+  findAccount,
   resetPassword,
   getBasicUserInfo,
 };

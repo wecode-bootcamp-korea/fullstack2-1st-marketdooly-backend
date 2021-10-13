@@ -9,7 +9,9 @@ router
   .get(middlewares.tokenController.verifyToken, userController.getAllUsers);
 router.route('/login').post(userController.login);
 router.route('/signup').post(userController.signUp);
-router.route('/id').post(userController.findUser);
+router.route('/account').post(userController.findAccount);
 router.route('/pw').post(userController.findPassword);
+router.route('/duplicate/account').post(userController.checkDuplicateAccount);
+router.route('/duplicate/email').post(userController.checkDuplicateEmail);
 
 export default router;
