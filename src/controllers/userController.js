@@ -44,7 +44,7 @@ const login = async (req, res) => {
   try {
     const { account, password } = req.body;
     const result = await userService.login(account, password);
-    await tokenController.createSendToken(result, 200, res);
+    await tokenController.responseWithIssuedToken(result, 200, res);
   } catch (err) {
     res.status(400).json({
       status: 'fail',

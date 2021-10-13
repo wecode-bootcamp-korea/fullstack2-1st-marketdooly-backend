@@ -12,7 +12,7 @@ const issueAccessToken = info => {
   });
 };
 
-const createSendToken = async (info, statusCode, res) => {
+const responseWithIssuedToken = async (info, statusCode, res) => {
   const token = issueAccessToken(info);
   res.cookie('jwt', token, cookieOptions);
   res.status(statusCode).json({
@@ -24,9 +24,10 @@ const createSendToken = async (info, statusCode, res) => {
 
 const verifyToken = async (req, res, next) => {
   try {
+    const { cookie } = req.headers;
     let accessToken;
-    if (req.headers.cookie && req.headers.cookie.startsWith('jwt')) {
-      accessToken = req.headers.cookie.split('=')[1];
+    if (cookie && cookie.startsWith('jwt')) {
+      accessToken = cookie.split('=')[1];
     } else {
       return next(new Error('접근 권한이 없습니다.'));
     }
@@ -38,4 +39,4 @@ const verifyToken = async (req, res, next) => {
   }
 };
 
-export default { issueAccessToken, createSendToken, verifyToken };
+export default { issueAccessToken, responseWithIssuedToken, verifyToken };
