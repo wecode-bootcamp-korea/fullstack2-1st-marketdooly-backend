@@ -143,27 +143,27 @@ model ReviewOnLike {
 
 model Banner {
   id           Int      @id @default(autoincrement())
-  name         String   @unique @db.VarChar(50)
-  group        String   @unique @map("group") @db.VarChar(50)
+  group        String   @map("group") @db.VarChar(50)
   link         String   @db.VarChar(2000)
-  type         String   @db.VarChar(50)
+  type         String?  @db.VarChar(50)
   header       String?  @db.VarChar(50)
   description  String?  @db.VarChar(200)
-  createAt     DateTime @default(now()) @map("created_at")
-  displayOrder Int      @map("display_order")
+  displayOrder Int?     @map("display_order")
+  createdAt    DateTime @default(now()) @map("created_at")
 
   @@map("banners")
 }
 
 model Event {
-  id          Int      @id @default(autoincrement())
-  name        String   @unique @db.VarChar(50)
-  eventGroup  String   @unique @map("event_group") @db.VarChar(50)
-  productId   Int      @map("product_id")
-  product     Product  @relation(fields: [productId], references: [id])
-  createdAt   DateTime @default(now()) @map("created_at")
-  header      String?  @db.VarChar(50)
-  description String?  @db.VarChar(200)
+  id           Int      @id @default(autoincrement())
+  group        String   @map("group") @db.VarChar(50)
+  productId    Int      @map("product_id")
+  product      Product  @relation(fields: [productId], references: [id])
+  type         String?  @db.VarChar(50)
+  header       String?  @db.VarChar(50)
+  description  String?  @db.VarChar(200)
+  displayOrder Int?     @map("display_order")
+  createdAt    DateTime @default(now()) @map("created_at")
 
   @@map("events")
 }
