@@ -2,39 +2,30 @@ import { mainService } from '../services'
 
 const getCategories = async (req, res) => {
   try{
-    const categories = await mainService.getCategories();
-    res.status(200).json(categories);
+    const getCategories = await mainService.getCategories();
+    res.status(200).json(getCategories);
   }
   catch(err) {
     console.error(err);
   };
 };
 
-const getCarouselDataById = async (req, res) => {
+const getBanner = async (req, res) => {
   try{
-    const id = req.params.id;
-    const carouselData = await mainService.getCarouselDataById(id);
-    res.status(200).json(carouselData);
+    const group = req.params.group;
+    const getBanner = await mainService.getBanner(group);
+    res.status(200).json(getBanner);
   }
   catch(err) {
     console.error(err);
   };
 };
 
-const getMainBannerData = async (req, res) => {
+const getEvent = async (req, res) => {
   try{
-    const mainBannerData = await mainService.getMainBannerData();
-    res.status(200).json(mainBannerData);
-  }
-  catch(err) {
-    console.error(err);
-  }
-}
-
-const getSpecialPriceData = async (req, res) => {
-  try{
-    const specialPriceData = await mainService.getSpecialPriceData();
-    res.status(200).json(specialPriceData);
+    const group = req.params.group;
+    const getEvent = await mainService.getEvent(group);
+    res.status(200).json(getEvent);
   }
   catch(err) {
     console.error(err);
@@ -43,7 +34,6 @@ const getSpecialPriceData = async (req, res) => {
 
 export default {
   getCategories,
-  getCarouselDataById,
-  getMainBannerData,
-  getSpecialPriceData
+  getBanner,
+  getEvent
 }

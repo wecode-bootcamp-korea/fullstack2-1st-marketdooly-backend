@@ -3,46 +3,48 @@ import prisma from "../../prisma";
 const getCategories = async () => {
   return await prisma.$queryRaw`
   SELECT  c.name
-        , s_c.name
+        , sc.name
   FROM  categories c
-      , sub_categories s_c;
+  JOIN  sub_categories sc
+  ON    c.id = sc.id;
   `;
 };
 
-const getCarouselDataById = async (id) => {
+const getBanner = async (group) => {
   return await prisma.$queryRaw`
-  SELECT  i.img_url
-        , p.id
-        , p.name_korean
-        , p.price
-        , p.discount
-        , p.discount_rate
-        , p.cost
-  FROM    images i
-        , products p
-  WHERE p.id = ${id}
-  `
-}
+  SELECT  b.id
+        , b.group
+        , b.image
+        , b.link
+        , b.type
+        , b.header
+        , b.description
+  FROM  banners b
+  WHERE b.id = ${group};
+  `;
+};
 
-const getMainBannerData = async () => {
+const getEvent = async (group) => {
   return await prisma.$queryRaw`
-  SELECT i.mainbanner_image_url
-  FROM images i
-  `
-}
-
-const getSpecialPriceData = async () => {
-  return await prisma.$queryRaw`
-  SELECT  i.special_price_image_url
-        , p.short_description
-  FROM  images i
-      , products p
+  SELECT  e.id
+        , e.group
+        , e.type
+        , i.product_image
+        , e.header
+        , e.description
+  FROM    events e
+  JOIN    products p
+    ON    e.product_id = p.id
+  JOIN    images i
+    ON    p.id = i.product_id
+  WHERE e.id = ${group}
   `
 }
 
 export default {
   getCategories,
-  getCarouselDataById,
-  getMainBannerData,
-  getSpecialPriceData
+  getBanner,
+  insertBannerData,
+  getEvent,
+  insertEventData
 }
