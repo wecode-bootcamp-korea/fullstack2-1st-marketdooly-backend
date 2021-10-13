@@ -8,24 +8,22 @@ generator client {
 }
 
 model User {
-  id                             Int      @id @default(autoincrement())
-  account                        String   @db.VarChar(50)
-  name                           String   @db.VarChar(20)
-  password                       String   @db.VarChar(200)
-  phoneNumber                    String   @map("phone_number") @db.VarChar(15)
-  address                        String   @db.VarChar(100)
-  gender                         String   @db.VarChar(20)
-  birthday                       DateTime @db.Date
-  createdAt                      DateTime @default(now()) @map("created_at")
-  mandatoryPolicyAgreed          Boolean  @map("mandatory_policy_agreed") @db.TinyInt
-  personalInfomationPolicyAgreed Boolean  @map("personal_information_policy_agreed") @db.TinyInt
-  marketingPolicyAgreed          Boolean  @map("marketing_policy_agreed") @db.TinyInt
-  cartId                         Int      @map("cart_id")
-  cart                           Cart     @relation("cartId", fields: [cartId], references: [id])
-  Cart                           Cart[]
-  Review                         Review[]
+  id                             Int       @id @default(autoincrement())
+  account                        String    @unique @db.VarChar(50)
+  email                          String    @unique @db.VarChar(100)
+  name                           String    @db.VarChar(20)
+  password                       String    @db.VarChar(200)
+  phoneNumber                    String    @map("phone_number") @db.VarChar(15)
+  address                        String    @db.VarChar(100)
+  gender                         String?   @db.VarChar(20)
+  birthday                       DateTime? @db.Date
+  createdAt                      DateTime  @default(now()) @map("created_at")
+  mandatoryPolicyAgreed          Boolean   @map("mandatory_policy_agreed") @db.TinyInt
+  personalInfomationPolicyAgreed Boolean   @default(false) @map("personal_information_policy_agreed") @db.TinyInt
+  marketingPolicyAgreed          Boolean   @default(false) @map("marketing_policy_agreed") @db.TinyInt
 
-  Order Order[]
+  Cart   Cart[]
+  Review Review[]
   @@map("users")
 }
 
@@ -36,8 +34,6 @@ model Category {
   updatedAt DateTime? @map("updated_at")
 
   subCategory SubCategory[]
-  product     Product[]
-  mdsPick     MdsPick[]
   @@map("categories")
 }
 
@@ -55,134 +51,73 @@ model SubCategory {
 
 model Product {
   id               Int       @id @default(autoincrement())
-  nameKorean       String    @map("name_korean") @db.VarChar(40)
-  thumbUrl         String    @map("thumb_url") @db.VarChar(2000)
-  shortDescription String    @map("short_description") @db.VarChar(200)
+  name             String    @map("name") @db.VarChar(40)
+  summary          String    @map("summary") @db.VarChar(200)
+  salesPrice       Int?      @map("sales_price")
+  discountRate     Int?      @map("discount_rate")
   originalPrice    Int       @map("original_price")
-  discount         Int
-  cost             Int
-  discountRate     Int       @map("discount_rate")
-  salesPrice       Int       @map("sales_price")
+  earnPoint        Int?      @map("earn_points")
+  specialFeature   String?   @map("special_features") @db.VarChar(20)
+  subCategoryId    Int       @map("sub_category_id")
+  salesUnit        String?   @map("sales_unit") @db.VarChar(10)
+  weightOrCapacity String?   @map("weight_or_capacity") @db.VarChar(20)
   createdAt        DateTime  @default(now()) @map("created_at")
   updatedAt        DateTime? @map("updated_at")
-  categoryId       Int       @map("category_id")
-  subCategoryId    Int       @map("sub_category_id")
+  deliveryType     String    @default("샛별배송/택배배송") @map("delivery_type") @db.VarChar(20)
+  originCountry    String?   @map("origin_country") @db.VarChar(20)
+  packaging        String?   @map("packaging") @db.VarChar(20)
+  packageMessage   String?   @map("package_message") @db.VarChar(400)
+  allergenInfo     String?   @map("allergen_information") @db.VarChar(120)
+  expiryDate       String?   @map("expiry_date") @db.VarChar(120)
+  notice           String?   @map("notice") @db.VarChar(400)
 
-  category      Category        @relation(fields: [categoryId], references: [id])
-  subCategory   SubCategory     @relation(fields: [subCategoryId], references: [id])
-  ProductDetail ProductDetail[]
-  Cart          Cart[]
-  Order         Order[]
-  suggestions   Suggestions[]
-  mdsPick       MdsPick[]
-  lastCall      LastCall[]
-  specilaPrices SpecialPrices[]
+  subCategory        SubCategory          @relation(fields: [subCategoryId], references: [id])
+  Cart               Cart[]
+  StorageTemperature StorageTemperature[]
+  Image              Image[]
+  Event              Event[]
 
   @@map("products")
 }
 
-model ProductDetail {
-  id                      Int                       @id @default(autoincrement())
-  earnPoint               Int                       @map("earn_point")
-  saleUnit                String                    @map("sale_unit") @db.VarChar(10)
-  weightOrCapacity        String?                   @map("weight_or_capacity") @db.VarChar(20)
-  deliveryType            String                    @map("delivery_type") @db.VarChar(20)
-  originCountry           String?                   @map("origin_country") @db.VarChar(10)
-  packageType             String                    @map("package_type") @db.VarChar(20)
-  packageMessage          String?                   @map("package_message") @db.VarChar(400)
-  notification            String?                   @map("notification") @db.VarChar(400)
-  allergenInfo            String?                   @map("allergen_information") @db.VarChar(200)
-  storageId               Int                       @map("storage_id")
-  storageTemporary        StorageTemporary          @relation(fields: [storageId], references: [id])
-  productId               Int                       @map("products_id")
-  product                 Product                   @relation(fields: [productId], references: [id])
-  Cart                    Cart[]
-  Order                   Order[]
-  AdditionalInformation   AdditionalInformation[]
-  DescriptionIntroduction DescriptionIntroduction[]
-  DescriptionInformation  DescriptionInformation[]
+model Image {
+  id               Int     @id @default(autoincrement())
+  productId        Int     @map("product_id")
+  Product          Product @relation(fields: [productId], references: [id])
+  productImage     String  @map("product_image") @db.VarChar(2000)
+  thumbnailImage   String? @map("thumbnail_image") @db.VarChar(2000)
+  descriptionImage String? @map("description_image") @db.VarChar(2000)
+  labelingImage    String? @map("labeling_image") @db.VarChar(2000)
+  templateImage    String? @map("template_image") @db.VarChar(2000)
 
-  @@map("products_details")
+  @@map("images")
 }
 
-model AdditionalInformation {
-  id                    Int           @id @default(autoincrement())
-  additionalInformation String?       @map("additional_information") @db.VarChar(200)
-  productDetailId       Int           @map("product_detail_id")
-  productDetail         ProductDetail @relation(fields: [productDetailId], references: [id])
+model StorageTemperature {
+  id          Int     @id @default(autoincrement())
+  storageType String  @map("storage_type")
+  productId   Int     @map("product_id")
+  product     Product @relation(fields: [productId], references: [id])
 
-  @@map("additional_informations")
-}
-
-model DescriptionIntroduction {
-  id                  Int           @id @default(autoincrement())
-  introductionImage   String        @map("introductions_image") @db.VarChar(200)
-  introductionTitle   String        @map("introductions_title") @db.VarChar(200)
-  introductionName    String        @map("introductions_name") @db.VarChar(200)
-  introductionArticle String        @map("introductions_article") @db.VarChar(200)
-  productDetailId     Int           @map("product_detail_id")
-  productDetail       ProductDetail @relation(fields: [productDetailId], references: [id])
-
-  @@map("descriptions_introductions")
-}
-
-model DescriptionInformation {
-  id                Int           @id @default(autoincrement())
-  information_image String        @db.VarChar(2000)
-  product_name      String        @db.VarChar(20)
-  certification     String?       @db.VarChar(20)
-  packaging_unit    String?       @db.VarChar(20)
-  matter_note       String?       @db.VarChar(100)
-  producer          String        @db.VarChar(100)
-  how_to_store      String?       @db.VarChar(100)
-  origin_country    String?       @db.VarChar(20)
-  service_call      String?       @db.VarChar(40)
-  produce_date      String        @db.VarChar(100)
-  productDetailId   Int           @map("product_detail_id")
-  productDetail     ProductDetail @relation(fields: [productDetailId], references: [id])
-
-  @@map("descriptions_informations")
+  @@map("storage_temperature")
 }
 
 model Cart {
-  id               Int              @id @default(autoincrement())
-  userId           Int              @map("user_id")
-  user             User             @relation(fields: [userId], references: [id])
-  productId        Int              @map("product_id")
-  product          Product          @relation(fields: [productId], references: [id])
-  productDetailId  Int              @map("product_detail_id")
-  productDetail    ProductDetail    @relation(fields: [productDetailId], references: [id])
-  storageId        Int              @map("storage_id")
-  StorageTemporary StorageTemporary @relation(fields: [storageId], references: [id])
-  quantity         Int
+  id        Int     @id @default(autoincrement())
+  userId    Int     @map("user_id")
+  user      User    @relation(fields: [userId], references: [id])
+  productId Int     @map("product_id")
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int     @default(1)
 
   Order Order[]
-  User  User[]  @relation("cartId")
   @@map("carts")
 }
 
-model StorageTemporary {
-  id          Int    @id @default(autoincrement())
-  storageType String
-
-  ProductDetail ProductDetail[]
-  Cart          Cart[]
-  Order         Order[]
-  @@map("storage_temporarys")
-}
-
 model Order {
-  id               Int              @id @default(autoincrement())
-  userId           Int              @map("user_id")
-  user             User             @relation(fields: [userId], references: [id])
-  productId        Int              @map("product_id")
-  product          Product          @relation(fields: [productId], references: [id])
-  productDetailId  Int              @map("product_detail_id")
-  productDetail    ProductDetail    @relation(fields: [productDetailId], references: [id])
-  storageId        Int              @map("storage_id")
-  StorageTemporary StorageTemporary @relation(fields: [storageId], references: [id])
-  cartId           Int              @map("cart_id")
-  cart             Cart             @relation(fields: [cartId], references: [id])
+  id     Int  @id @default(autoincrement())
+  cartId Int  @map("cart_id")
+  cart   Cart @relation(fields: [cartId], references: [id])
 
   @@map("orders")
 }
@@ -200,60 +135,37 @@ model Review {
 }
 
 model ReviewOnLike {
-  reviewId Int
-  userId   Int
+  reviewId Int @map("review_id")
+  userId   Int @map("user_id")
 
   @@id([reviewId, userId])
   @@map("reviews_likes")
 }
 
-model Suggestions {
+model Banner {
   id           Int      @id @default(autoincrement())
-  registeredAt DateTime @default(now()) @map("registered_at")
-  productId    Int      @map("product_id")
-  product      Product  @relation(fields: [productId], references: [id])
+  group        String   @map("group") @db.VarChar(50)
+  image        String   @db.VarChar(2000)
+  link         String   @db.VarChar(2000)
+  type         String?  @db.VarChar(50)
+  header       String?  @db.VarChar(50)
+  description  String?  @db.VarChar(200)
+  displayOrder Int?     @map("display_order")
+  createdAt    DateTime @default(now()) @map("created_at")
 
-  events Events[]
+  @@map("banners")
 }
 
-model MdsPick {
+model Event {
   id           Int      @id @default(autoincrement())
-  registeredAt DateTime @default(now()) @map("registered_at")
+  group        String   @map("group") @db.VarChar(50)
   productId    Int      @map("product_id")
   product      Product  @relation(fields: [productId], references: [id])
-  cateoryId    Int      @map("category_id")
-  category     Category @relation(fields: [cateoryId], references: [id])
+  type         String?  @db.VarChar(50)
+  header       String?  @db.VarChar(50)
+  description  String?  @db.VarChar(200)
+  displayOrder Int?     @map("display_order")
+  createdAt    DateTime @default(now()) @map("created_at")
 
-  events Events[]
-  @@map("mds_pick")
-}
-
-model LastCall {
-  id           Int      @id @default(autoincrement())
-  registeredAt DateTime @default(now()) @map("registered_at")
-  productId    Int      @map("product_id")
-  product      Product  @relation(fields: [productId], references: [id])
-
-  events Events[]
-  @@map("last_call")
-}
-
-model SpecialPrices {
-  id           Int      @id @default(autoincrement())
-  registeredAt DateTime @default(now()) @map("registered_at")
-  productId    Int      @map("product_id")
-  product      Product  @relation(fields: [productId], references: [id])
-
-  events Events[]
-  @@map("special_prices")
-}
-
-model Events {
-  id            Int           @id @default(autoincrement())
-  name          String        @db.VarChar(50)
-  eventId       Int           @map("event_id")
-  specialPrices SpecialPrices @relation(fields: [eventId], references: [id])
-  lastCall      LastCall      @relation(fields: [eventId], references: [id])
-  mdsPick       MdsPick       @relation(fields: [eventId], references: [id])
-  suggestions   Suggestions   @relation(fields: [eventId], references: [id])
+  @@map("events")
 }
