@@ -1,5 +1,3 @@
-import dotenv from 'dotenv';
-dotenv.config({ path: `${__dirname}/../.env` });
 import jwt from 'jsonwebtoken';
 
 const cookieOptions = {
@@ -27,11 +25,8 @@ const createSendToken = async (info, statusCode, res) => {
 const verifyToken = async (req, res, next) => {
   try {
     let accessToken;
-    if (
-      req.headers.authorization &&
-      req.headers.authorization.startsWith('Bearer')
-    ) {
-      accessToken = req.headers.authorization.split(' ')[1];
+    if (req.headers.cookie && req.headers.cookie.startsWith('jwt')) {
+      accessToken = req.headers.cookie.split('=')[1];
     } else {
       return next(new Error('접근 권한이 없습니다.'));
     }

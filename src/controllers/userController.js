@@ -8,7 +8,7 @@ const getAllUsers = async (req, res) => {
     if (
       account !== 'onecookie' ||
       name !== '이원국' ||
-      email !== 'const.wonkook@gmail.com'
+      email !== 'dooly@wecode.com'
     )
       throw new Error('접근 권한 없음');
     const result = await userService.getAllUsers();
