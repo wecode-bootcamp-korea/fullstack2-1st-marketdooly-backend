@@ -8,6 +8,5 @@ cartRouter
   .get('', cartController.getCart)
   .patch('', cartController.updateItemQuantity)
   .delete('', cartController.deleteItem);
-// .post('', cartController.cartToOrder);
 
 export default cartRouter;

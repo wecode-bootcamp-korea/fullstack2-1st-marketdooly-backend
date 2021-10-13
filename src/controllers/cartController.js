@@ -1,9 +1,9 @@
 import { cartService } from '../services';
 
 const addToCart = async (req, res) => {
-  const { cartData } = req.body;
   try {
-    const addToCart = await cartService.addToCart(cartData);
+    const { user_id, product_id, quantity } = req.body;
+    await cartService.addToCart(user_id, product_id, quantity);
     res.status(200).json({ message: 'ADDED_TO_CART', addToCart });
   } catch (err) {
     console.log(err);
@@ -12,7 +12,8 @@ const addToCart = async (req, res) => {
 
 const getCart = async (req, res) => {
   try {
-    const getCart = await cartService.getCart();
+    const { user_id = 3 } = req.body;
+    const getCart = await cartService.getCart(user_id);
     res.status(200).json(getCart);
   } catch (err) {
     console.log(err);
@@ -20,30 +21,20 @@ const getCart = async (req, res) => {
 };
 
 const updateItemQuantity = async (req, res) => {
-  const { cartId, quantity } = req.body;
   try {
-    const itemQuantity = await cartService.updateItemQuantity(cartId, quantity);
-    res.status(200).json({ message: 'QUANTITY_CHANGED', itemQuantity });
+    const { cart_id, quantity } = req.body;
+    await cartService.updateItemQuantity(cart_id, quantity);
+    res.status(200).json({ message: 'QUANTITY_CHANGED', cart_id, quantity });
   } catch (err) {
     console.log(err);
   }
 };
 
 const deleteItem = async (req, res) => {
-  const { productId } = req.body;
   try {
-    const deleteItem = await cartService.deleteItem(productId);
-    res.status(200).json({ message: 'ITEM_DELETED', deleteItem });
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-const cartToOrder = async (req, res) => {
-  const { cartId } = req.body;
-  try {
-    const cartToOrder = await cartService.cartToOrder(cartId);
-    res.status(200).json({ message: 'ITEM_DELETED', cartToOrder });
+    const { cart_id } = req.body;
+    await cartService.deleteItem(cart_id);
+    res.status(200).json({ message: 'ITEM_DELETED', cart_id });
   } catch (err) {
     console.log(err);
   }
@@ -54,5 +45,4 @@ export default {
   getCart,
   updateItemQuantity,
   deleteItem,
-  cartToOrder,
 };

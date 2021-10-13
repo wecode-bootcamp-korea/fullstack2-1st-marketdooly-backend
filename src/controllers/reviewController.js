@@ -2,19 +2,15 @@ import { reviewService } from '../services';
 import { asyncErrorCatcher, checkRequiredKey } from '../utils';
 
 const createReview = asyncErrorCatcher(async (req, res, next) => {
-  try {
-    checkRequiredKey(req.body, 'title', 'text');
+  checkRequiredKey(req.body, 'title', 'text');
 
-    const { title, text } = req.body;
-    const userId = 1; // jwt.verify()로 userId 식별하는 middleware 필요
-    await reviewService.createReview(title, text, userId);
+  const { title, text } = req.body;
+  const userId = 1; // jwt.verify()로 userId 식별하는 middleware 필요
+  await reviewService.createReview(title, text, userId);
 
-    res.status(201).json({
-      msg: 'CREATE_SUCCESS',
-    });
-  } catch (error) {
-    throw error;
-  }
+  res.status(201).json({
+    msg: 'CREATE_SUCCESS',
+  });
 });
 
 const getReviewList = asyncErrorCatcher(async (req, res) => {
