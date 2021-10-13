@@ -5,11 +5,14 @@
  * @returns {boolean}
  */
 const checkRequiredKey = (obj, ...keys) => {
+  let missedKeyList = [];
   for (const key of [...keys]) {
     if (!Object.keys(obj).includes(key)) {
-      const msg = `KEY ERROR: ${key} is missed`;
-      throw new Error(msg);
+      missedKeyList.push(key);
     }
+  }
+  if (missedKeyList.length > 0) {
+    throw new Error('KEY ERROR: ' + missedKeyList.join(', '));
   }
 };
 
