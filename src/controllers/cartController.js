@@ -12,8 +12,7 @@ const addToCart = async (req, res) => {
 
 const getCart = async (req, res) => {
   try {
-    const { user_id = 3 } = req.body;
-    const getCart = await cartService.getCart(user_id);
+    const getCart = await cartService.getCart();
     res.status(200).json(getCart);
   } catch (err) {
     console.log(err);

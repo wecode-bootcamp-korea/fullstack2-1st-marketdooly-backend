@@ -10,8 +10,8 @@ const getCart = async user_id => {
   return getCart;
 };
 
-const updateItemQuantity = async (cartId, quantity) => {
-  const itemQuantity = await cartDao.updateItemQuantity(cartId, quantity);
+const updateItemQuantity = async (cart_id, quantity) => {
+  const itemQuantity = await cartDao.updateItemQuantity(cart_id, quantity);
   return itemQuantity;
 };
 
