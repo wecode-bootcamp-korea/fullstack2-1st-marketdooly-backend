@@ -144,6 +144,7 @@ model ReviewOnLike {
 model Banner {
   id           Int      @id @default(autoincrement())
   group        String   @map("group") @db.VarChar(50)
+  image        String   @db.VarChar(2000)
   link         String   @db.VarChar(2000)
   type         String?  @db.VarChar(50)
   header       String?  @db.VarChar(50)
