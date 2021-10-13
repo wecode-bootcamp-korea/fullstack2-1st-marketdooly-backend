@@ -20,7 +20,7 @@ const getBanner = async (group) => {
         , b.header
         , b.description
   FROM  banners b
-  WHERE b.id = ${group};
+  WHERE b.group = ${group};
   `;
 };
 
@@ -37,7 +37,7 @@ const getEvent = async (group) => {
     ON    e.product_id = p.id
   JOIN    images i
     ON    p.id = i.product_id
-  WHERE e.id = ${group}
+  WHERE e.group = ${group}
   `
 }
 
