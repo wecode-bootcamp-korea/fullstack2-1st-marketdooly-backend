@@ -4,9 +4,10 @@ import { cartController } from '../controllers';
 const cartRouter = express.Router();
 
 cartRouter
+  .post('', cartController.addToCart)
   .get('', cartController.getCart)
-  .put('', cartController.updateItemQuantity)
-  .delete('', cartController.deleteItem)
-  .post('/:id', cartController.addToCart);
+  .patch('', cartController.updateItemQuantity)
+  .delete('', cartController.deleteItem);
+// .post('', cartController.cartToOrder);
 
 export default cartRouter;
