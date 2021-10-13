@@ -1,5 +1,6 @@
 import { userService } from '../services';
 import tokenController from '../../middlewares/tokenController';
+import { checkRequiredKey } from '../utils';
 
 const getAllUsers = async (req, res) => {
   try {
@@ -24,10 +25,53 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+const checkDuplicateAccount = async (req, res) => {
+  try {
+    const result = await userService.checkDuplicateAccount(req.body.account);
+    res.status(200).json({
+      status: 'success',
+      result,
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: err.message,
+    });
+  }
+};
+
+const checkDuplicateEmail = async (req, res) => {
+  try {
+    const result = await userService.checkDuplicateEmail(req.body.email);
+    res.status(200).json({
+      status: 'success',
+      result,
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: err.message,
+    });
+  }
+};
+
 const signUp = async (req, res) => {
   try {
-    const userInfo = req.body;
-    const result = await userService.signUp(userInfo);
+    const requiredKeys = [
+      'account',
+      'name',
+      'email',
+      'password',
+      'phone_number',
+      'address',
+      'gender',
+      'birthday',
+      'mandatory_policy_agreed',
+      'personal_information_policy_agreed',
+      'marketing_policy_agreed',
+    ];
+    await checkRequiredKey(req.body, requiredKeys);
+    const result = await userService.signUp(req.body);
     res.status(201).json({
       status: 'success',
       result,
@@ -53,10 +97,10 @@ const login = async (req, res) => {
   }
 };
 
-const findUser = async (req, res) => {
+const findAccount = async (req, res) => {
   try {
     const { email, name } = req.body;
-    const result = await userService.findUser(email, name);
+    const result = await userService.findAccount(email, name);
     res.status(200).json({
       status: 'success',
       message: result,
@@ -86,4 +130,12 @@ const findPassword = async (req, res) => {
   }
 };
 
-export default { getAllUsers, signUp, login, findUser, findPassword };
+export default {
+  getAllUsers,
+  signUp,
+  login,
+  findAccount,
+  findPassword,
+  checkDuplicateAccount,
+  checkDuplicateEmail,
+};
