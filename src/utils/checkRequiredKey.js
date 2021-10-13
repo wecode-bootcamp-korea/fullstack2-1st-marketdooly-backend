@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /**
  * object의 필수 key 포함 여부를 체크
  * @param {*} obj object
@@ -7,6 +8,11 @@
 const checkRequiredKey = (obj, ...keys) => {
   let missedKeyList = [];
   for (const key of [...keys]) {
+=======
+const checkRequiredKey = (obj, keys) => {
+  let missedKeyList = [];
+  for (const key of keys) {
+>>>>>>> master
     if (!Object.keys(obj).includes(key)) {
       missedKeyList.push(key);
     }

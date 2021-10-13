@@ -8,6 +8,10 @@ app.use(express.json());
 app.use(cors());
 app.use(router);
 
+app.all('*', (req, res, next) => {
+  next(new Error('Page not found'));
+});
+
 app.use((err, req, res, next) => {
   console.log('app.js error handler\n', err);
   const { status, message } = err;
