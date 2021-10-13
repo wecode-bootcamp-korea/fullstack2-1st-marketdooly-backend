@@ -1,7 +1,7 @@
 import mainController from './mainController';
 import cartController from './cartController';
 import reviewController from './reviewController';
-import detailController from './detailController';
+import productDetailController from './productDetailController';
 
-export { mainController, cartController, reviewController, detailController };
+export { mainController, cartController, reviewController, productDetailController };
 

@@ -1,11 +1,11 @@
 import express from 'express';
 import { productDetailController } from '../controllers';
-import { reviewController } from '../controllers';
+import reviewRouter from './reviewRouter';
 
 const productRouter = express.Router();
 
-productRouter.get('', productDetailController.getProductproduct);
-productRouter.post('', productDetailController.postProductproduct);
-router.use('/:id/reviews', reviewRouter);
+productRouter.get('', productDetailController.getProductDetail);
+productRouter.post('', productDetailController.postProductDetail);
+productRouter.use('/:id/reviews', reviewRouter);
 
 export default productRouter;

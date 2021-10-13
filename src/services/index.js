@@ -1,6 +1,6 @@
 import mainService from './mainService';
 import cartService from './cartService';
 import reviewService from './reviewService';
-import detailService from './detailService';
+import productDetailService from './productDetailService';
 
-export { mainService, cartService, reviewService, detailService };
+export { mainService, cartService, reviewService, productDetailService };

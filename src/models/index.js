@@ -1,6 +1,6 @@
 import mainDao from './mainDao';
 import cartDao from './cartDao';
 import reviewDao from './reviewDao';
-import detailDao from './detailDao';
+import productDetailDao from './productDetailDao';
 
-export { mainDao, cartDao, reviewDao, detailDao };
+export { mainDao, cartDao, reviewDao, productDetailDao };
