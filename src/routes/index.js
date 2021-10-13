@@ -3,6 +3,7 @@ import mainRouter from './mainRouter';
 import pingRouter from './pingRouter';
 import cartRouter from './cartRouter';
 import reviewRouter from './reviewRouter';
+import userRouter from './userRouter';
 
 const router = express.Router();
 
@@ -13,5 +14,6 @@ router.use('/cart', cartRouter);
 router.use('/products/:id/reviews', reviewRouter);
 router.use('/cart', cartRouter);
 router.use('/products/:id/reviews', reviewRouter);
+router.use('/users', userRouter);
 
 export default router;
