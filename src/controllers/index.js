@@ -1,16 +1,5 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-import mainController from "./mainController";
-
-export { mainController }
-=======
-=======
->>>>>>> master
+import mainController from './mainController';
 import cartController from './cartController';
 import reviewController from './reviewController';
 
-export { cartController, reviewController };
-<<<<<<< HEAD
->>>>>>> master
-=======
->>>>>>> master
+export { mainController, cartController, reviewController };
