@@ -4,8 +4,8 @@ import { mainController } from '../controllers';
 const Router = express.Router();
 
 Router.get('/category', mainController.getCategories);
-Router.get('/carousel/:id', mainController.getCarouselData);
-Router.get('/banner', mainController.getMainBannerData);
-Router.get('/special-price', mainController.getSpecialPriceData);
+Router.get('/banner/:group', mainController.getBanner);
+Router.get('/event/:group', mainController.getEvent);
+
 
 export default Router;

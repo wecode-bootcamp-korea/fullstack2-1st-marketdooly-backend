@@ -1,34 +1,47 @@
 import { cartService } from '../services';
 
+const addToCart = async (req, res) => {
+  try {
+    const { user_id, product_id, quantity } = req.body;
+    await cartService.addToCart(user_id, product_id, quantity);
+    res.status(200).json({ message: 'ADDED_TO_CART', addToCart });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const getCart = async (req, res) => {
   try {
     const getCart = await cartService.getCart();
     res.status(200).json(getCart);
-  } catch (err) {}
+  } catch (err) {
+    console.log(err);
+  }
 };
 
-const putItemQuantity = async (req, res) => {
-  const { quantity } = req.body;
+const updateItemQuantity = async (req, res) => {
   try {
-    const itemQuantity = await cartService.putItemQuantity(quantity);
-    res.status(200).json({ message: 'QUANTITY_CHANGED', itemQuantity });
-  } catch (err) {}
+    const { cart_id, quantity } = req.body;
+    await cartService.updateItemQuantity(cart_id, quantity);
+    res.status(200).json({ message: 'QUANTITY_CHANGED', cart_id, quantity });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const deleteItem = async (req, res) => {
-  const { cartId } = req.body;
   try {
-    const deleteItem = await cartService.deleteItem(cartId);
-    res.status(200).json({ message: 'ITEM_DELETED', deleteItem });
-  } catch (err) {}
+    const { cart_id } = req.body;
+    await cartService.deleteItem(cart_id);
+    res.status(200).json({ message: 'ITEM_DELETED', cart_id });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
-const postCart = async (req, res) => {
-  const { cartData } = req.body;
-  try {
-    const postCart = await cartDao.postCart(cartData);
-    res.status(200).json({ message: 'SUCCESS', postCart });
-  } catch (err) {}
+export default {
+  addToCart,
+  getCart,
+  updateItemQuantity,
+  deleteItem,
 };
-
-export default { getCart, putItemQuantity, deleteItem, postCart };

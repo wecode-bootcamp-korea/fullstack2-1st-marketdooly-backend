@@ -1,51 +1,42 @@
 import prisma from '../../prisma';
 
-const getCart = async () => {
+const addToCart = async (user_id, product_id, quantity) => {
   return await prisma.$queryRaw`
-  SELECT * FROM carts
-  `;
-};
-
-const putItemQuantity = async quantity => {
-  return await prisma.$queryRaw`
-  UPDATE carts
-  SET quantity=${quantity}
-  WHERE id=${id}
-  `;
-};
-
-const deleteItem = async () => {
-  return await prisma.$queryRaw`
-  DELETE FROM carts
-  WHERE id=${id}
-  `;
-};
-
-const postCart = async cartData => {
-  const {
-    address,
-    name_kor,
-    sales_price,
-    original_price,
-    earn_point,
-    storage_temp,
-    thumb_url,
-    quantity,
-  } = cartData;
-  return await prisma.$queryRaw`
-  INSERT INTO orders
-    ( address, name_kor, sales_price, original_price, earn_point, storage_temp, thumb_url, quantity )
+  INSERT INTO carts (user_id, product_id, quantity)
   VALUES (
-    ${address},
-    ${name_kor},
-    ${sales_price},
-    ${original_price},
-    ${earn_point},
-    ${storage_temp},
-    ${thumb_url},
+    ${user_id},
+    ${product_id},
     ${quantity}
   )
   `;
 };
+const getCart = async user_id => {
+  return await prisma.$queryRaw`
+     SELECT c.quantity, p.name, p.sales_price, p.original_price, p.earn_points,
+            i.thumbnail_image, s.storage_type
+       FROM carts c, products p, images i, storage_temperature s
+      WHERE user_id = ${user_id}
+  `;
+};
 
-export default { getCart, putItemQuantity, deleteItem, postCart };
+const updateItemQuantity = async (cartId, quantity) => {
+  return await prisma.$queryRaw`
+  UPDATE carts
+     SET quantity=${quantity}
+   WHERE id=${cartId}
+  `;
+};
+
+const deleteItem = async cart_id => {
+  return await prisma.$queryRaw`
+  DELETE FROM carts
+   WHERE id=${cart_id}
+  `;
+};
+
+export default {
+  addToCart,
+  getCart,
+  updateItemQuantity,
+  deleteItem,
+};

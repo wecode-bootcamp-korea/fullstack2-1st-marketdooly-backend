@@ -4,21 +4,16 @@ const getCategories = async () => {
   return await mainDao.getCategories();
 }
 
-const getCarouselData = async (id) => {
-  return await mainDao.getCarouselData(id);
+const getBanner = async (group) => {
+  return await mainDao.getBanner(group);
 }
 
-const getMainBannerData = async () => {
-  return await mainDao.getMainBannerData();
-}
-
-const getSpecialPriceData = async () => {
-  return await mainDao.getSpecialPriceData();
+const getEvent = async (group) => {
+  return await mainDao.getEvent(group);
 }
 
 export default {
   getCategories,
-  getCarouselData,
-  getMainBannerData,
-  getSpecialPriceData
+  getBanner,
+  getEvent
 }
