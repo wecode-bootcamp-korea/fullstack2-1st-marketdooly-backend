@@ -37,9 +37,9 @@ const getEvent = async (group) => {
     ON    e.product_id = p.id
   JOIN    images i
     ON    p.id = i.product_id
-  WHERE e.group = ${group}
-  `
-}
+  WHERE e.group = ${group};
+  `;
+};
 
 export default {
   getCategories,
