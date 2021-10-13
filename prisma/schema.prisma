@@ -57,6 +57,7 @@ model Product {
   discountRate     Int?      @map("discount_rate")
   originalPrice    Int       @map("original_price")
   earnPoint        Int?      @map("earn_points")
+  specialFeature   String?   @map("special_features") @db.VarChar(20)
   subCategoryId    Int       @map("sub_category_id")
   salesUnit        String?   @map("sales_unit") @db.VarChar(10)
   weightOrCapacity String?   @map("weight_or_capacity") @db.VarChar(20)
