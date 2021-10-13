@@ -4,4 +4,10 @@ import reviewService from './reviewService';
 import productDetailService from './productDetailService';
 import userService from './userService';
 
-export { mainService, cartService, reviewService, productDetailService, userService };
+export {
+  mainService,
+  cartService,
+  reviewService,
+  productDetailService,
+  userService,
+};
