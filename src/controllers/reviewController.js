@@ -2,7 +2,8 @@ import { reviewService } from '../services';
 import { asyncErrorCatcher, checkRequiredKey } from '../utils';
 
 const createReview = asyncErrorCatcher(async (req, res, next) => {
-  checkRequiredKey(req.body, 'title', 'text');
+  const keyList = ['title', 'text'];
+  checkRequiredKey(req.body, keyList);
 
   const { title, text } = req.body;
   const userId = 1; // jwt.verify()로 userId 식별하는 middleware 필요
@@ -14,7 +15,8 @@ const createReview = asyncErrorCatcher(async (req, res, next) => {
 });
 
 const getReviewList = asyncErrorCatcher(async (req, res) => {
-  checkRequiredKey(req.query, 'offset', 'limit');
+  const keyList = ['offset', 'limit'];
+  checkRequiredKey(req.query, keyList);
 
   const { offset, limit } = req.query;
   const reviewList = await reviewService.getReviewList(offset, limit);
@@ -23,7 +25,8 @@ const getReviewList = asyncErrorCatcher(async (req, res) => {
 });
 
 const updateReview = asyncErrorCatcher(async (req, res) => {
-  checkRequiredKey(req.body, 'reviewId', 'title', 'text');
+  const keyList = ['reviewId', 'title', 'text'];
+  checkRequiredKey(req.body, keyList);
 
   const { reviewId, title, text } = req.body;
   await reviewService.updateReview(reviewId, title, text);
@@ -34,7 +37,8 @@ const updateReview = asyncErrorCatcher(async (req, res) => {
 });
 
 const deleteReview = asyncErrorCatcher(async (req, res) => {
-  checkRequiredKey(req.body, 'reviewId');
+  const keyList = ['reviewId'];
+  checkRequiredKey(req.body, keyList);
 
   const { reviewId } = req.body;
   await reviewService.deleteReview(reviewId);

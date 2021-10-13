@@ -9,7 +9,12 @@ const createReview = async (title, text, userId) => {
 
 const getReviewList = async (offset, limit) => {
   return await prisma.$queryRaw`
-    SELECT *
+    SELECT id
+         , title
+         , text
+         , user_id
+         , created_at
+         , updated_at
       FROM reviews
      WHERE id > ${offset}
      LIMIT ${limit}

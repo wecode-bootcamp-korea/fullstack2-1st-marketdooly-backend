@@ -1,4 +1,4 @@
-import prisma from "../../prisma";
+import prisma from '../../prisma';
 
 const getCategories = async () => {
   return await prisma.$queryRaw`
@@ -10,7 +10,7 @@ const getCategories = async () => {
   `;
 };
 
-const getBanner = async (group) => {
+const getBanner = async group => {
   return await prisma.$queryRaw`
   SELECT  b.id
         , b.group
@@ -24,7 +24,7 @@ const getBanner = async (group) => {
   `;
 };
 
-const getEvent = async (group) => {
+const getEvent = async group => {
   return await prisma.$queryRaw`
   SELECT  e.id
         , e.group
@@ -44,7 +44,5 @@ const getEvent = async (group) => {
 export default {
   getCategories,
   getBanner,
-  insertBannerData,
   getEvent,
-  insertEventData
-}
+};
