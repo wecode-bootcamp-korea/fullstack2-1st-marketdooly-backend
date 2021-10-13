@@ -10,11 +10,11 @@ const addToCart = async (user_id, product_id, quantity) => {
   )
   `;
 };
-
 const getCart = async user_id => {
   return await prisma.$queryRaw`
-     SELECT *
-       FROM carts, products, images, storage_temperature
+     SELECT c.quantity, p.name, p.sales_price, p.original_price, p.earn_points,
+            i.thumbnail_image, s.storage_type
+       FROM carts c, products p, images i, storage_temperature s
       WHERE user_id = ${user_id}
   `;
 };
