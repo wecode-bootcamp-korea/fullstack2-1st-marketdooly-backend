@@ -9,9 +9,9 @@ generator client {
 
 model User {
   id                             Int       @id @default(autoincrement())
-  account                        String    @db.VarChar(50)
+  account                        String    @unique @db.VarChar(50)
+  email                          String    @unique @db.VarChar(100)
   name                           String    @db.VarChar(20)
-  email                          String    @db.VarChar(100)
   password                       String    @db.VarChar(200)
   phoneNumber                    String    @map("phone_number") @db.VarChar(15)
   address                        String    @db.VarChar(100)
