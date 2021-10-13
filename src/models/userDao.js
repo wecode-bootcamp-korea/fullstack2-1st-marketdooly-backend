@@ -115,6 +115,7 @@ const resetPassword = async (account, password) => {
 const getBasicUserInfo = async accountName => {
   return await prisma.$queryRaw`
   SELECT
+    u.id,
     u.account,
     u.name,
     u.email
