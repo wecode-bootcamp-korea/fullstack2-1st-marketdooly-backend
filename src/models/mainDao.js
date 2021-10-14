@@ -2,14 +2,12 @@ import prisma from '../../prisma';
 
 const getCategories = async () => {
   return await prisma.$queryRaw`
-  SELECT 
-        c.id categoryId
-        , c.name categoryName
-        , sc.id subCategoryId
-        , sc.name subCategoryName
-  FROM  categories c
-  JOIN  sub_categories sc
-  ON    c.id = sc.category_id;
+  SELECT      c.name categoryName
+            , GROUP_CONCAT(sc.name) AS subCategoryName
+  FROM        categories c
+  INNER JOIN  sub_categories sc
+  ON          c.id = sc.category_id
+  GROUP BY    c.name
   `;
 };
 
@@ -29,17 +27,20 @@ const getBanner = async group => {
 
 const getEvent = async group => {
   return await prisma.$queryRaw`
-  SELECT  e.id
-        , e.group
-        , e.type
+  SELECT  p.id
         , i.product_image
+        , p.name
+        , p.sales_price
+        , p.discount_rate
+        , p.original_price
+        , p.special_features
         , e.header
         , e.description
   FROM    events e
   JOIN    products p
-    ON    e.product_id = p.id
+    ON    p.id = e.product_id
   JOIN    images i
-    ON    p.id = i.product_id
+    ON    i.product_id = p.id
   WHERE e.group = ${group};
   `;
 };
