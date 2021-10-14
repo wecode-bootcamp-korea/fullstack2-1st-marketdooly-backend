@@ -50,30 +50,31 @@ model SubCategory {
 }
 
 model Product {
-  id               Int       @id @default(autoincrement())
-  name             String    @map("name") @db.VarChar(40)
-  summary          String    @map("summary") @db.VarChar(200)
-  salesPrice       Int?      @map("sales_price")
-  discountRate     Int?      @map("discount_rate")
-  originalPrice    Int       @map("original_price")
-  earnPoint        Int?      @map("earn_points")
-  specialFeature   String?   @map("special_features") @db.VarChar(20)
-  subCategoryId    Int       @map("sub_category_id")
-  salesUnit        String?   @map("sales_unit") @db.VarChar(10)
-  weightOrCapacity String?   @map("weight_or_capacity") @db.VarChar(20)
-  createdAt        DateTime  @default(now()) @map("created_at")
-  updatedAt        DateTime? @map("updated_at")
-  deliveryType     String    @default("샛별배송/택배배송") @map("delivery_type") @db.VarChar(20)
-  originCountry    String?   @map("origin_country") @db.VarChar(20)
-  packaging        String?   @map("packaging") @db.VarChar(20)
-  packageMessage   String?   @map("package_message") @db.VarChar(400)
-  allergenInfo     String?   @map("allergen_information") @db.VarChar(120)
-  expiryDate       String?   @map("expiry_date") @db.VarChar(120)
-  notice           String?   @map("notice") @db.VarChar(400)
+  id                   Int       @id @default(autoincrement())
+  name                 String    @map("name") @db.VarChar(100)
+  summary              String    @map("summary") @db.VarChar(200)
+  storageTemperatureId Int       @map("storage_temperature_id")
+  salesPrice           Int?      @map("sales_price")
+  discountRate         Int?      @map("discount_rate")
+  originalPrice        Int       @map("original_price")
+  earnPoint            Int?      @map("earn_points")
+  specialFeature       String?   @map("special_features") @db.VarChar(20)
+  subCategoryId        Int       @map("sub_category_id")
+  salesUnit            String?   @map("sales_unit") @db.VarChar(10)
+  weightOrCapacity     String?   @map("weight_or_capacity") @db.VarChar(20)
+  createdAt            DateTime  @default(now()) @map("created_at")
+  updatedAt            DateTime? @map("updated_at")
+  deliveryType         String    @default("샛별배송/택배배송") @map("delivery_type") @db.VarChar(20)
+  originCountry        String?   @map("origin_country") @db.VarChar(20)
+  packaging            String?   @map("packaging") @db.VarChar(20)
+  packageMessage       String?   @map("package_message") @db.VarChar(400)
+  allergenInfo         String?   @map("allergen_information") @db.VarChar(120)
+  expiryDate           String?   @map("expiry_date") @db.VarChar(120)
+  notice               String?   @map("notice") @db.VarChar(400)
 
-  subCategory        SubCategory          @relation(fields: [subCategoryId], references: [id])
+  storageTemperature StorageTemperature @relation(fields: [storageTemperatureId], references: [id])
+  subCategory        SubCategory        @relation(fields: [subCategoryId], references: [id])
   Cart               Cart[]
-  StorageTemperature StorageTemperature[]
   Image              Image[]
   Event              Event[]
 
@@ -94,11 +95,10 @@ model Image {
 }
 
 model StorageTemperature {
-  id          Int     @id @default(autoincrement())
-  storageType String  @map("storage_type")
-  productId   Int     @map("product_id")
-  product     Product @relation(fields: [productId], references: [id])
+  id          Int    @id @default(autoincrement())
+  storageType String @map("storage_type")
 
+  Product Product[]
   @@map("storage_temperature")
 }
 
