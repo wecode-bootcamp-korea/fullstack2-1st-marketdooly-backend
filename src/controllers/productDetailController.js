@@ -5,7 +5,7 @@ const getProductDetail = async (req, res) => {
     const getProductDetail = await productDetailService.getProductDetail();
     res.status(200).json(getProductDetail);
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
 };
 
