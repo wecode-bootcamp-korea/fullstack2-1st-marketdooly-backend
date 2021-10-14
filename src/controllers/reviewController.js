@@ -14,12 +14,22 @@ const createReview = asyncErrorCatcher(async (req, res, next) => {
   });
 });
 
-const getReviewList = asyncErrorCatcher(async (req, res) => {
-  const keyList = ['offset', 'limit'];
+const getTotalReviewCount = asyncErrorCatcher(async (req, res) => {
+  const keyList = ['productId'];
   checkRequiredKey(req.query, keyList);
 
-  const { offset, limit } = req.query;
-  const reviewList = await reviewService.getReviewList(offset, limit);
+  const totalCountObj = await reviewService.getTotalReviewCount(
+    req.query.productId
+  );
+
+  res.status(200).json(totalCountObj);
+});
+
+const getReviewList = asyncErrorCatcher(async (req, res) => {
+  const keyList = ['productId', 'offset', 'limit'];
+  checkRequiredKey(req.query, keyList);
+
+  const reviewList = await reviewService.getReviewList(req.query);
 
   res.status(200).json(reviewList);
 });
@@ -48,4 +58,10 @@ const deleteReview = asyncErrorCatcher(async (req, res) => {
   });
 });
 
-export default { createReview, getReviewList, updateReview, deleteReview };
+export default {
+  createReview,
+  getTotalReviewCount,
+  getReviewList,
+  updateReview,
+  deleteReview,
+};

@@ -4,8 +4,12 @@ const createReview = async (title, text, userId) => {
   await reviewDao.createReview(title, text, userId);
 };
 
-const getReviewList = async (offset, limit) => {
-  return await reviewDao.getReviewList(offset, limit);
+const getTotalReviewCount = async productId => {
+  return await reviewDao.getTotalReviewCount(productId);
+};
+
+const getReviewList = async query => {
+  return await reviewDao.getReviewList(query);
 };
 
 const updateReview = async (reviewId, title, text) => {
@@ -16,4 +20,10 @@ const deleteReview = async reviewId => {
   await reviewDao.deleteReview(reviewId);
 };
 
-export default { createReview, getReviewList, updateReview, deleteReview };
+export default {
+  createReview,
+  getTotalReviewCount,
+  getReviewList,
+  updateReview,
+  deleteReview,
+};

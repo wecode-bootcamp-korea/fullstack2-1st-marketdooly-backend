@@ -5,6 +5,7 @@ const reviewRouter = express.Router();
 
 reviewRouter
   .get('', reviewController.getReviewList)
+  .get('/count', reviewController.getTotalReviewCount)
   .post('', reviewController.createReview)
   .patch('', reviewController.updateReview)
   .delete('', reviewController.deleteReview);
