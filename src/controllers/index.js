@@ -3,6 +3,7 @@ import cartController from './cartController';
 import reviewController from './reviewController';
 import productDetailController from './productDetailController';
 import userController from './userController';
+import orderController from './orderController';
 
 export {
   mainController,
@@ -10,4 +11,5 @@ export {
   reviewController,
   productDetailController,
   userController,
+  orderController,
 };

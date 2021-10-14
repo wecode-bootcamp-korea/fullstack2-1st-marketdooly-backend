@@ -3,5 +3,6 @@ import cartDao from './cartDao';
 import reviewDao from './reviewDao';
 import productDetailDao from './productDetailDao';
 import userDao from './userDao';
+import orderDao from './orderDao';
 
-export { mainDao, cartDao, reviewDao, productDetailDao, userDao };
+export { orderDao, mainDao, cartDao, reviewDao, productDetailDao, userDao };
