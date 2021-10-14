@@ -8,7 +8,7 @@ const cookieOptions = {
 const issueAccessToken = info => {
   return jwt.sign({ info }, process.env.JWT_SECRET_KEY, {
     issuer: 'marketdooly',
-    expiresIn: '1h',
+    expiresIn: '3h',
   });
 };
 
