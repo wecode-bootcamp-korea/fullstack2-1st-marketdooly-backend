@@ -1,12 +1,12 @@
 import prisma from '../../prisma';
 import { Prisma } from '@prisma/client';
 
-const addToCart = async (user_id, product_id, quantity) => {
+const addToCart = async (userId, productId, quantity) => {
   return await prisma.$queryRaw`
   INSERT INTO carts (user_id, product_id, quantity)
   VALUES (
-    ${user_id},
-    ${product_id},
+    ${userId},
+    ${productId},
     ${quantity}
   )
   `;
@@ -47,7 +47,7 @@ const getCart = async userId => {
   `;
 
   const result = await prisma.$queryRaw`
-  SELECT 
+  SELECT
     p.id product_id
   , p.name
   , p.sales_price
