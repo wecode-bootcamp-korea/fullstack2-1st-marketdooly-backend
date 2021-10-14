@@ -2,11 +2,12 @@ import prisma from '../../prisma';
 
 const getCategories = async () => {
   return await prisma.$queryRaw`
-    SELECT c.name categoryName
-         , sc.name subCategoryName
-      FROM categories c
-         , sub_categories sc
-     WHERE sc.category_id = c.id;
+  SELECT      c.name categoryName
+            , GROUP_CONCAT(sc.name) AS subCategoryName
+  FROM        categories c
+  INNER JOIN  sub_categories sc
+  ON          c.id = sc.category_id
+  GROUP BY    c.name
   `;
 };
 
