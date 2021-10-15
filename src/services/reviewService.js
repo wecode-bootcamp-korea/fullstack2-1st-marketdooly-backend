@@ -1,19 +1,35 @@
+import e from 'express';
 import { reviewDao } from '../models';
 
-const createReview = async (title, text, userId) => {
-  await reviewDao.createReview(title, text, userId);
+const createReview = async reqBodyObj => {
+  await reviewDao.createReview(reqBodyObj);
 };
 
-const getReviewList = async (offset, limit) => {
-  return await reviewDao.getReviewList(offset, limit);
+const getTotalReviewCount = async productId => {
+  return await reviewDao.getTotalReviewCount(productId);
 };
 
-const updateReview = async (reviewId, title, text) => {
-  await reviewDao.updateReview(reviewId, title, text);
+const getReviewByReviewId = async reviewId => {
+  return await reviewDao.getReviewByReviewId(reviewId);
+};
+
+const getReviewList = async query => {
+  return await reviewDao.getReviewList(query);
+};
+
+const updateReview = async reqBodyObj => {
+  await reviewDao.updateReview(reqBodyObj);
 };
 
 const deleteReview = async reviewId => {
   await reviewDao.deleteReview(reviewId);
 };
 
-export default { createReview, getReviewList, updateReview, deleteReview };
+export default {
+  createReview,
+  getTotalReviewCount,
+  getReviewByReviewId,
+  getReviewList,
+  updateReview,
+  deleteReview,
+};
