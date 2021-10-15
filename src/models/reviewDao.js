@@ -1,9 +1,10 @@
 import prisma from '../../prisma';
 
-const createReview = async (title, text, userId) => {
+const createReview = async reqBodyObj => {
+  const { productId, userId, title, text } = reqBodyObj;
   await prisma.$queryRaw`
-    INSERT INTO reviews (title, text, user_id, created_at)
-    VALUES (${title}, ${text}, ${userId}, ${new Date()})
+    INSERT INTO reviews (title, text, product_id, user_id)
+    VALUES (${title}, ${text}, ${productId}, ${userId})
   ;`;
 };
 
@@ -14,6 +15,15 @@ const getTotalReviewCount = async productId => {
      WHERE product_id = ${productId}
   ;`;
   return totalCountObj;
+};
+
+const getReviewByReviewId = async reviewId => {
+  const [userIdObj] = await prisma.$queryRaw`
+    SELECT user_id as userId
+      FROM reviews
+     WHERE id = ${reviewId}
+  ;`;
+  return userIdObj;
 };
 
 const getReviewList = async query => {
@@ -44,7 +54,8 @@ const getReviewList = async query => {
   ;`;
 };
 
-const updateReview = async (reviewId, title, text) => {
+const updateReview = async reqBodyObj => {
+  const { reviewId, title, text } = reqBodyObj;
   await prisma.$queryRaw`
     UPDATE reviews 
        SET title = ${title},
@@ -63,6 +74,7 @@ const deleteReview = async reviewId => {
 export default {
   createReview,
   getTotalReviewCount,
+  getReviewByReviewId,
   getReviewList,
   updateReview,
   deleteReview,
