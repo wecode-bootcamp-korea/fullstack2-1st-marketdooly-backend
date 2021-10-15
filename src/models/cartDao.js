@@ -46,6 +46,8 @@ const getCart = async userId => {
     user_id = ${userId}
   `;
 
+  if (!cartDataList.length) return [];
+
   const result = await prisma.$queryRaw`
   SELECT
     p.id product_id
