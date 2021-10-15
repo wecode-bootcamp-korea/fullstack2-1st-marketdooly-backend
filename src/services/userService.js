@@ -1,6 +1,13 @@
 import { userDao } from '../models';
 import { encrypt, passwordGenerator } from '../utils';
 
+const session = async info => {
+  const { account } = info[0];
+  const [userId] = await userDao.searchUserId(account);
+  if (!userId) throw new Error('로그인 상태가 아닙니다.');
+  return await userDao.getCartItemsNumber(userId.id);
+};
+
 const getAllUsers = async () => {
   return await userDao.getAllUsers();
 };
@@ -78,6 +85,7 @@ const findPassword = async (account, email, name) => {
 };
 
 export default {
+  session,
   getAllUsers,
   login,
   signUp,

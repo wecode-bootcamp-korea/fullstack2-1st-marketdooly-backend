@@ -2,6 +2,22 @@ import { userService } from '../services';
 import tokenController from '../../middlewares/tokenController';
 import { checkRequiredKey } from '../utils';
 
+const session = async (req, res) => {
+  try {
+    const { info } = req.headers.payload;
+    const result = await userService.session(info);
+    res.status(200).json({
+      status: 'success',
+      result,
+    });
+  } catch (err) {
+    res.status(403).json({
+      status: 'forbidden',
+      message: err.message,
+    });
+  }
+};
+
 const getAllUsers = async (req, res) => {
   try {
     const { info } = req.headers.payload;
@@ -131,6 +147,7 @@ const findPassword = async (req, res) => {
 };
 
 export default {
+  session,
   getAllUsers,
   signUp,
   login,

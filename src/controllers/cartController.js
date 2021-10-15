@@ -13,7 +13,7 @@ const addToCart = async (req, res) => {
 
 const getCart = async (req, res) => {
   try {
-    const { id } = req.headers.payload.info;
+    const { id } = req.headers.payload.info[0];
     const getCart = await cartService.getCart(id);
     res.status(200).json(getCart);
   } catch (err) {
