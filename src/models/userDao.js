@@ -1,5 +1,16 @@
 import prisma from '../../prisma';
 
+const getCartItemsNumber = async userId => {
+  return await prisma.$queryRaw`
+  SELECT
+    c.id
+  FROM
+    carts c
+  WHERE
+    c.user_id = ${userId}
+  `;
+};
+
 const getAllUsers = async () => {
   return await prisma.$queryRaw`
   SELECT
@@ -23,7 +34,8 @@ const searchUserEmail = async email => {
 const searchUserId = async accountName => {
   return await prisma.$queryRaw`
   SELECT
-    u.account
+    u.account,
+    u.id
   FROM
     users u
   WHERE
@@ -127,6 +139,7 @@ const getBasicUserInfo = async accountName => {
 };
 
 export default {
+  getCartItemsNumber,
   getAllUsers,
   searchUserEmail,
   searchUserId,

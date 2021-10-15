@@ -7,6 +7,9 @@ const router = express.Router();
 router
   .route('/')
   .get(middlewares.tokenController.verifyToken, userController.getAllUsers);
+router
+  .route('/session')
+  .get(middlewares.tokenController.verifyToken, userController.session);
 router.route('/login').post(userController.login);
 router.route('/signup').post(userController.signUp);
 router.route('/account').post(userController.findAccount);
