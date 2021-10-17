@@ -1,11 +1,20 @@
 import prisma from '../../prisma';
+import { asyncErrorCatcher } from '../utils';
 
 const createReview = async reqBodyObj => {
   const { productId, userId, title, text } = reqBodyObj;
   await prisma.$queryRaw`
-    INSERT INTO reviews (title, text, product_id, user_id)
-    VALUES (${title}, ${text}, ${productId}, ${userId})
+    INSERT INTO reviews (product_id, user_id, title, text)
+    VALUES (${productId}, ${userId}, ${title}, ${text})
   ;`;
+
+  const [reviewIdObj] = await prisma.$queryRaw`
+    SELECT id as reviewId
+      FROM reviews
+      ORDER BY id DESC
+      LIMIT 1
+  ;`;
+  return reviewIdObj.reviewId;
 };
 
 const getTotalReviewCount = async productId => {
@@ -14,20 +23,11 @@ const getTotalReviewCount = async productId => {
       FROM reviews
      WHERE product_id = ${productId}
   ;`;
-  return totalCountObj;
+  return totalCountObj.totalCount;
 };
 
-const getReviewByReviewId = async reviewId => {
-  const [userIdObj] = await prisma.$queryRaw`
-    SELECT user_id as userId
-      FROM reviews
-     WHERE id = ${reviewId}
-  ;`;
-  return userIdObj;
-};
-
-const getReviewList = async query => {
-  const { productId, offset, limit } = query;
+const getReviewList = async reqQueryObj => {
+  const { productId, offset, limit } = reqQueryObj;
   return await prisma.$queryRaw`
     SELECT r.id
          , r.title
@@ -62,6 +62,7 @@ const updateReview = async reqBodyObj => {
            text = ${text}
      WHERE id = ${reviewId}
   ;`;
+  return reviewId;
 };
 
 const deleteReview = async reviewId => {
@@ -69,12 +70,12 @@ const deleteReview = async reviewId => {
     DELETE FROM reviews 
      WHERE id = ${reviewId}
   ;`;
+  return reviewId;
 };
 
 export default {
   createReview,
   getTotalReviewCount,
-  getReviewByReviewId,
   getReviewList,
   updateReview,
   deleteReview,
