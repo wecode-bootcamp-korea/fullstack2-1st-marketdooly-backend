@@ -29,7 +29,9 @@ const verifyToken = async (req, res, next) => {
     if (cookie && cookie.startsWith('jwt')) {
       accessToken = cookie.split('=')[1];
     } else {
-      return next(new Error('접근 권한이 없습니다.'));
+      const err = new Error('접근 권한이 없습니다.');
+      err.status = 401;
+      return next(err);
     }
     const payload = await jwt.verify(accessToken, process.env.JWT_SECRET_KEY);
     req.headers.payload = payload;

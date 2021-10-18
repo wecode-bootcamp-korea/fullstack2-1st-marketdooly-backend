@@ -59,7 +59,7 @@ const updateReview = asyncErrorCatcher(async (req, res) => {
       throw new Error('UPDATE_REVIEW_ERROR');
     }
   } else {
-    res.status(401).json({ msg: '본인 댓글만 수정할 수 있습니다' });
+    res.status(401).json({ msg: '본인 후기만 수정할 수 있습니다' });
   }
 });
 
@@ -78,7 +78,7 @@ const deleteReview = asyncErrorCatcher(async (req, res) => {
   } else {
     res.status(401).json({
       status: 'fail',
-      msg: '본인 댓글만 삭제할 수 있습니다',
+      msg: '본인 후기만 삭제할 수 있습니다',
     });
   }
 });
