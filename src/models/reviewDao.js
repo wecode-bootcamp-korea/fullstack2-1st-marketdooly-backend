@@ -1,5 +1,4 @@
 import prisma from '../../prisma';
-import { asyncErrorCatcher } from '../utils';
 
 const createReview = async reqBodyObj => {
   const { productId, userId, title, text } = reqBodyObj;

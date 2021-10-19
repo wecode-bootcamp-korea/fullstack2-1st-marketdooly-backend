@@ -5,14 +5,18 @@ const createReview = asyncErrorCatcher(async (req, res) => {
   const keyList = ['productId', 'title', 'text'];
   checkRequiredKey(req.body, keyList);
 
-  const userId = req.headers.payload.info[0].id;
-  req.body.userId = userId;
+  const loginUserId = req.headers.payload.info[0].id;
+  req.body.userId = loginUserId;
 
-  const reviewId = await reviewService.createReview(req.body);
-  if (reviewId) {
-    res.status(201).json({ reviewId });
+  if (loginUserId) {
+    const reviewId = await reviewService.createReview(req.body);
+    if (reviewId) {
+      res.status(201).json({ reviewId });
+    } else {
+      throw new Error('CREATE_REVIEW_ERROR');
+    }
   } else {
-    throw new Error('CREATE_REVIEW_ERROR');
+    res.status(401).json('로그인 후에 후기 작성이 가능합니다');
   }
 });
 
@@ -59,7 +63,7 @@ const updateReview = asyncErrorCatcher(async (req, res) => {
       throw new Error('UPDATE_REVIEW_ERROR');
     }
   } else {
-    res.status(401).json({ msg: '본인 후기만 수정할 수 있습니다' });
+    res.status(401).json('본인 후기만 수정할 수 있습니다');
   }
 });
 
@@ -76,10 +80,7 @@ const deleteReview = asyncErrorCatcher(async (req, res) => {
       throw new Error('DELETE_REVIEW_ERROR');
     }
   } else {
-    res.status(401).json({
-      status: 'fail',
-      msg: '본인 후기만 삭제할 수 있습니다',
-    });
+    res.status(401).json('본인 후기만 삭제할 수 있습니다');
   }
 });
 

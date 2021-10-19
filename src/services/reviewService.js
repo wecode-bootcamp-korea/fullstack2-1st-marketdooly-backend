@@ -1,5 +1,4 @@
 import { reviewDao } from '../models';
-import { asyncErrorCatcher } from '../utils';
 
 const createReview = async reqBodyObj => {
   return await reviewDao.createReview(reqBodyObj);
