@@ -5,7 +5,12 @@ const getCategories = async () => {
 };
 
 const getAllCategories = async () => {
-  return await mainDao.getAllCategories();
+  const categories = await mainDao.getCategories();
+  for (const category of categories) {
+    const subCategories = await mainDao.getSubCategories(category.id);
+    category.list = subCategories;
+  }
+  return categories;
 };
 
 const getBanner = async group => {
