@@ -8,16 +8,12 @@ const getCategories = async () => {
   `;
 };
 
-const getAllCategories = async () => {
+const getSubCategories = async categoryId => {
   return await prisma.$queryRaw`
-  SELECT
-        c.id categoryId
-        , c.name categoryName
-        , sc.id subCategoryId
-        , sc.name subCategoryName
-  FROM  categories c
-  LEFT JOIN  sub_categories sc
-  ON    c.id = sc.category_id;
+  SELECT      sc.name subCategoryName
+            , sc.id id
+  FROM        sub_categories sc
+  WHERE   sc.category_id = ${categoryId};
   `;
 };
 
@@ -79,7 +75,7 @@ const getEvent = async group => {
 
 export default {
   getCategories,
-  getAllCategories,
+  getSubCategories,
   getBanner,
   getEvent,
   getMDsPick,
