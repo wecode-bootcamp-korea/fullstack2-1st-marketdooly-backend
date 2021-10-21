@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt, { TokenExpiredError } from 'jsonwebtoken';
 
 const cookieOptions = {
   httpOnly: true,
@@ -33,11 +33,13 @@ const verifyToken = async (req, res, next) => {
       err.status = 401;
       return next(err);
     }
+    console.log('not Verified');
     const payload = await jwt.verify(accessToken, process.env.JWT_SECRET_KEY);
     req.headers.payload = payload;
     next();
   } catch (err) {
-    next(err);
+    if (err instanceof TokenExpiredError)
+      next(new Error('토큰이 만료되었습니다'));
   }
 };
 
