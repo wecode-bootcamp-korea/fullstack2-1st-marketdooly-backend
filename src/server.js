@@ -1,7 +1,8 @@
 import app from './app';
 import dotenv from 'dotenv';
 
-dotenv.config({ path: `${__dirname}/../.env` });
+dotenv.config();
+// dotenv.config({ path: `${__dirname}/../.env` });
 
 app.listen(process.env.PORT, err => {
   if (!err) {
